@@ -1,4 +1,3 @@
-// src/pages/RegisterPage/RegisterPage.tsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../../components/AuthLayout/AuthLayout';
@@ -11,7 +10,7 @@ const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false); // Adicionar estado de carregamento
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,12 +22,12 @@ const RegisterPage: React.FC = () => {
 
     if (password !== confirmPassword) {
       setErrorMessage('As senhas não coincidem!');
-      setLoading(false); // Parar carregamento se as senhas não combinarem
+      setLoading(false);
       return;
     }
 
     try {
-      await registerUser(name, email, password); // Chama a função de serviço
+      await registerUser(name, email, password);
       alert('Cadastro realizado com sucesso! Você pode fazer login agora.');
       navigate('/login');
     } catch (error: any) {
@@ -83,7 +82,7 @@ const RegisterPage: React.FC = () => {
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirmar senha</label>
             <input
-              type="text" // Type text temporariamente para ver se está digitando certo
+              type="text"
               id="confirmPassword"
               placeholder="****"
               value={confirmPassword}

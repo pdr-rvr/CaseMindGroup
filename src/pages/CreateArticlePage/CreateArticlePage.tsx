@@ -1,8 +1,7 @@
-// src/pages/CreateArticlePage/CreateArticlePage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import './CreateArticlePage.css'; // Seu CSS para esta página
+import './CreateArticlePage.css';
 
 const CreateArticlePage: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -82,7 +81,7 @@ const CreateArticlePage: React.FC = () => {
 
   return (
     <div className="create-article-container">
-      <h1>Novo Artigo</h1> {/* Título conforme a imagem */}
+      <h1>Novo Artigo</h1>
       {error && <div className="error-message">{error}</div>}
       {successMessage && <div className="success-message">{successMessage}</div>}
       <form onSubmit={handleSave} className="article-form">
@@ -124,9 +123,6 @@ const CreateArticlePage: React.FC = () => {
               <img src={URL.createObjectURL(imageFile)} alt="Preview" />
             ) : (
               <div className="image-placeholder">
-                {/* Ícone de galeria conforme a imagem */}
-                {/* Você pode usar um SVG inline ou uma imagem PNG/JPG para este ícone */}
-                {/* Exemplo com SVG simples: */}
                 <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                   <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -151,8 +147,8 @@ const CreateArticlePage: React.FC = () => {
         </div>
 
         <div className="form-actions">
-          <button type="button" className="cancel-button" onClick={handleCancel} disabled={loading}>Cancelar</button> {/* Estilo conforme imagem */}
-          <button type="submit" className="save-button" disabled={loading}> {/* Estilo conforme imagem */}
+          <button type="button" className="cancel-button" onClick={handleCancel} disabled={loading}>Cancelar</button>
+          <button type="submit" className="save-button" disabled={loading}>
             {loading ? 'Salvando...' : 'Salvar'}
           </button>
         </div>

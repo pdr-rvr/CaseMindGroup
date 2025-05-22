@@ -1,8 +1,7 @@
-// src/pages/EditProfilePage/EditProfilePage.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import './EditProfilePage.css'; // Seu CSS para esta página
+import './EditProfilePage.css';
 
 const EditProfilePage: React.FC = () => {
   const navigate = useNavigate();
@@ -21,7 +20,7 @@ const EditProfilePage: React.FC = () => {
       setError(null);
       setSuccessMessage(null);
 
-      if (authLoading) return; // Espera o AuthContext carregar
+      if (authLoading) return;
 
       const token = getToken();
 
@@ -85,7 +84,7 @@ const EditProfilePage: React.FC = () => {
 
     const formData = new FormData();
     formData.append('name', name);
-    formData.append('lastName', lastName); // Incluindo o sobrenome
+    formData.append('lastName', lastName);
 
     if (profileImageFile) {
       formData.append('profile_picture', profileImageFile);
@@ -107,9 +106,6 @@ const EditProfilePage: React.FC = () => {
 
       const result = await response.json();
       setSuccessMessage(result.message || 'Perfil atualizado com sucesso!');
-      // TODO: Se seu AuthContext tem um método para atualizar o usuário, chame-o aqui
-      // para que a Navbar reflita as mudanças imediatamente sem refresh.
-      // Ex: updateUserInContext(result.user);
 
     } catch (err: any) {
       console.error('Erro ao salvar perfil:', err);
@@ -132,12 +128,12 @@ const EditProfilePage: React.FC = () => {
   }
 
   return (
-    <div className="edit-profile-container"> {/* Container principal do seu CSS */}
-      <h1>Editar Perfil</h1> {/* Título conforme a imagem */}
+    <div className="edit-profile-container">
+      <h1>Editar Perfil</h1> 
       {error && <div className="error-message">{error}</div>}
       {successMessage && <div className="success-message">{successMessage}</div>}
-      <form onSubmit={handleSave} className="profile-form"> {/* Formulário do seu CSS */}
-        <div className="left-column"> {/* Coluna esquerda para campos do formulário */}
+      <form onSubmit={handleSave} className="profile-form"> 
+        <div className="left-column"> 
             <div className="form-section image-upload-section">
                 <label htmlFor="avatar-upload">Inserir avatar</label>
                 <div className="image-input-group">
@@ -186,14 +182,14 @@ const EditProfilePage: React.FC = () => {
             </div>
 
             <div className="form-actions">
-                <button type="button" className="cancel-button" onClick={handleCancel} disabled={pageLoading}>Cancelar</button> {/* Estilo conforme imagem */}
-                <button type="submit" className="save-button" disabled={pageLoading}> {/* Estilo conforme imagem */}
+                <button type="button" className="cancel-button" onClick={handleCancel} disabled={pageLoading}>Cancelar</button> 
+                <button type="submit" className="save-button" disabled={pageLoading}> 
                     {pageLoading ? 'Salvando...' : 'Salvar'}
                 </button>
             </div>
         </div>
-        <div className="right-column"> {/* Coluna direita para a imagem de perfil */}
-            <div className="profile-image-preview large-preview"> {/* Adicionei 'large-preview' para ter uma imagem maior */}
+        <div className="right-column"> 
+            <div className="profile-image-preview large-preview"> 
                 <img src={profileImageUrl} alt="Profile Preview" />
             </div>
         </div>

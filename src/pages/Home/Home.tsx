@@ -1,4 +1,3 @@
-// src/pages/Home/Home.tsx
 import React, { useEffect, useState } from 'react';
 import styles from './Home.module.css';
 import FeaturedArticle from '../../components/FeaturedArticle/FeaturedArticle';
@@ -31,17 +30,20 @@ const Home: React.FC = () => {
 
   return (
     <div className={styles.homeContainer}>
-      <div className={styles.mainContent}>
+      <div className={styles.topContentWrapper}>
         <div className={styles.leftColumn}>
           {featuredArticle && <FeaturedArticle article={featuredArticle} />}
-          <div className={styles.recentArticlesGrid}>
-            {recentArticles.map((article, index) => (
-              <ArticleCard key={article.id} article={article} index={index} />
-            ))}
-          </div>
         </div>
         <div className={styles.rightColumn}>
           <NewArticlesSection articles={newArticles} />
+        </div>
+      </div>
+      
+      <div className={styles.recentArticlesFooter}>
+        <div className={styles.recentArticlesGrid}>
+          {recentArticles.map((article, index) => (
+            <ArticleCard key={article.id} article={article} index={index} />
+          ))}
         </div>
       </div>
     </div>

@@ -1,8 +1,7 @@
-/* src/components/ArticleListItem/ArticleListItem.css */
 .article-list-item-link {
     text-decoration: none;
     color: inherit;
-    display: block; /* Para o link ocupar o espaço do item */
+    display: block;
 }
 
 .article-list-item {
@@ -23,12 +22,12 @@
 }
 
 .article-list-item-image {
-    width: 100px; /* Tamanho fixo para a imagem do item da lista */
+    width: 100px;
     height: 80px;
     object-fit: cover;
     border-radius: 4px;
     margin-right: 15px;
-    flex-shrink: 0; /* Impede que a imagem encolha */
+    flex-shrink: 0;
 }
 
 .article-list-item-content {
@@ -43,7 +42,7 @@
     margin-bottom: 5px;
     line-height: 1.3;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Limita o título a 2 linhas */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -55,7 +54,7 @@
     margin-bottom: 10px;
     line-height: 1.4;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Limita o texto a 2 linhas */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;

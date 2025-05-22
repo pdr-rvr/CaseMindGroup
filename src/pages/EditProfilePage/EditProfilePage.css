@@ -1,36 +1,34 @@
-/* src/pages/EditProfilePage/EditProfilePage.css */
 .edit-profile-container {
-    max-width: 900px; /* Aumenta um pouco para as duas colunas */
+    max-width: 900px;
     margin: 40px auto;
     padding: 30px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    /* Removi text-align: center; do container para alinhar o form à esquerda */
 }
 
 .edit-profile-container h1 {
     color: #333;
     margin-bottom: 30px;
     font-size: 2em;
-    text-align: left; /* Alinha o título à esquerda */
+    text-align: left;
 }
 
 .profile-form {
-    display: flex; /* Habilita flexbox para as colunas */
-    gap: 40px; /* Espaço entre as colunas */
+    display: flex;
+    gap: 40px;
 }
 
 .left-column {
-    flex: 1; /* Ocupa o máximo de espaço possível */
+    flex: 1;
 }
 
 .right-column {
-    flex-basis: 300px; /* Largura fixa para a coluna da imagem */
+    flex-basis: 300px;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Alinha a imagem no topo */
-    padding-top: 50px; /* Ajusta a posição vertical da imagem para alinhar com o form */
+    align-items: flex-start;
+    padding-top: 50px;
 }
 
 .profile-form .form-section {
@@ -55,14 +53,13 @@
     box-sizing: border-box;
 }
 
-/* Profile Image Specifics */
-.profile-image-preview.large-preview { /* Nova classe para a imagem maior */
-    margin: 0; /* Remove margem automática */
-    width: 250px; /* Largura maior conforme a imagem */
-    height: 250px; /* Altura maior conforme a imagem */
-    border-radius: 8px; /* Borda mais quadrada, não circular */
+.profile-image-preview.large-preview { 
+    margin: 0; 
+    width: 250px;
+    height: 250px;
+    border-radius: 8px;
     overflow: hidden;
-    border: 1px solid #eee; /* Borda sutil */
+    border: 1px solid #eee;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -75,8 +72,6 @@
     object-fit: cover;
 }
 
-/* Reutilizando estilos de input-group e select-button do CreateArticlePage.css */
-/* Certifique-se que estas classes estão disponíveis (no CreateArticlePage.css ou em um Common.css) */
 .image-input-group {
     display: flex;
     align-items: center;
@@ -118,7 +113,7 @@
 }
 
 .cancel-button {
-    background-color: #f84d4d; /* Tom de vermelho da imagem */
+    background-color: #f84d4d;
     color: white;
 }
 
@@ -127,7 +122,7 @@
 }
 
 .save-button {
-    background-color: #333; /* Tom de preto da imagem */
+    background-color: #333;
     color: white;
 }
 
@@ -135,7 +130,6 @@
     background-color: #000;
 }
 
-/* Estilos para mensagens de feedback (se não tiver em outro CSS) */
 .error-message {
     color: #dc3545;
     background-color: #f8d7da;

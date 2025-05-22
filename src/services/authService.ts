@@ -7,7 +7,6 @@ interface AuthResponse {
     id: number;
     name: string;
     email: string;
-    // ...outras propriedades do usuário
   };
 }
 

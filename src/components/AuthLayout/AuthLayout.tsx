@@ -1,9 +1,8 @@
-// src/components/AuthLayout/AuthLayout.tsx
 import React from 'react';
-import './AuthLayout.css'; // Vamos criar este CSS
+import './AuthLayout.css'; 
 
 interface AuthLayoutProps {
-  children: React.ReactNode; // Para renderizar o conteúdo do formulário à direita
+  children: React.ReactNode; 
 }
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
@@ -18,7 +17,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
         </div>
       </div>
       <div className="auth-layout-right">
-        {children} {/* Aqui é onde o formulário (Login, Register, Forgot Password) será renderizado */}
+        {children} 
       </div>
     </div>
   );

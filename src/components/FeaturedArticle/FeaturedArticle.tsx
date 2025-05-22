@@ -30,7 +30,6 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
           <p className={styles.meta}>
             Por {article.author_name} - {formatDate(article.created_at)}
           </p>
-          <button className={styles.readMoreButton}>LER MAIS</button>
         </div>
       </div>
   );

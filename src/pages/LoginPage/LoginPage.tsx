@@ -1,25 +1,24 @@
-// src/pages/LoginPage/LoginPage.tsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../../components/AuthLayout/AuthLayout';
-import '../../styles/AuthForms.css'; // Mantenha a importação do CSS comum
-import { useAuth } from '../../context/AuthContext'; // Importe o useAuth
+import '../../styles/AuthForms.css';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false); // Adicionado estado de carregamento
-  const [error, setError] = useState<string | null>(null); // Adicionado estado de erro
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { login } = useAuth(); // Pega a função de login do contexto
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // Inicia o carregamento
-    setError(null); // Limpa erros anteriores
+    setLoading(true);
+    setError(null);
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', { // <--- Confirme esta URL
+      const response = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,20 +28,17 @@ const LoginPage: React.FC = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        // Assume que o backend envia { message: "..." } em caso de erro
         throw new Error(errorData.message || 'Falha no login. Credenciais inválidas.');
       }
 
       const data = await response.json();
-      // O backend DEVE retornar { token: "...", user: { id: ..., name: ..., email: ... } }
-      // Se seu backend retorna um formato diferente, ajuste data.user para o objeto correto.
-      login(data.token, data.user); // <--- PASSA O user OBJECT AQUI PARA O CONTEXTO
-      navigate('/'); // Redireciona para a página inicial após o login bem-sucedido
+      login(data.token, data.user); 
+      navigate('/');
     } catch (err: any) {
       console.error('Erro de login:', err);
       setError(err.message || 'Ocorreu um erro desconhecido durante o login.');
     } finally {
-      setLoading(false); // Finaliza o carregamento
+      setLoading(false);
     }
   };
 
@@ -50,7 +46,7 @@ const LoginPage: React.FC = () => {
     <AuthLayout>
       <div className="auth-form-card">
         <h2>Conectar</h2>
-        {error && <div className="error-message">{error}</div>} {/* Exibe mensagens de erro */}
+        {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -80,7 +76,7 @@ const LoginPage: React.FC = () => {
             Esqueceu a senha?
           </Link>
           <button type="submit" className="auth-button" disabled={loading}>
-            {loading ? 'Entrando...' : 'Entrar'} {/* Texto do botão dinâmico */}
+            {loading ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
         <div className="auth-bottom-link">

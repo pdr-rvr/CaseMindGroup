@@ -1,20 +1,16 @@
-// src/context/AuthContext.tsx
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 
-// Supondo que sua interface UserInfo seja algo assim:
 interface UserInfo {
   id: number;
   name: string;
   email: string;
   profilePictureUrl?: string;
-  // Adicione outras propriedades do usuário que você precisa, como profilePictureUrl
-  // profilePictureUrl?: string;
 }
 
 interface AuthContextType {
   isAuthenticated: boolean;
   user: UserInfo | null;
-  login: (token: string, user: UserInfo) => void; // <--- Certifique-se de que 'user' está aqui
+  login: (token: string, user: UserInfo) => void;
   logout: () => void;
   getToken: () => string | null;
   loading: boolean;
@@ -29,16 +25,14 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<UserInfo | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Começa como true para verificar token
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       const token = localStorage.getItem('authToken');
       if (token) {
-        // Opcional: Validar o token com o backend aqui para garantir que não expirou
-        // e buscar os dados mais recentes do usuário.
         try {
-          const response = await fetch('http://localhost:3000/api/users/profile', { // Rota para buscar o perfil
+          const response = await fetch('http://localhost:3000/api/users/profile', {
             headers: {
               'Authorization': `Bearer ${token}`,
             },
@@ -52,11 +46,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               name: userData.name,
               email: userData.email,
               profilePictureUrl: userData.profilePictureUrl,
-              // ... outras propriedades do usuário que o backend retorna
-              // profilePictureUrl: userData.profilePictureUrl,
             });
           } else {
-            // Token inválido ou expirado
             localStorage.removeItem('authToken');
             setIsAuthenticated(false);
             setUser(null);
@@ -77,10 +68,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuthStatus();
   }, []);
 
-  const login = (token: string, userInfo: UserInfo) => { // <--- userInfo recebido aqui
+  const login = (token: string, userInfo: UserInfo) => {
     localStorage.setItem('authToken', token);
     setIsAuthenticated(true);
-    setUser(userInfo); // <--- ATUALIZA O ESTADO 'user'
+    setUser(userInfo);
   };
 
   const logout = () => {

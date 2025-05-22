@@ -1,4 +1,3 @@
-/* src/pages/CreateArticlePage/CreateArticlePage.css */
 .create-article-container {
   max-width: 800px;
   margin: 40px auto;
@@ -37,11 +36,10 @@
 }
 
 .article-form textarea {
-  min-height: 200px; /* Altura mínima para o campo de texto do artigo */
-  resize: vertical; /* Permite redimensionar verticalmente */
+  min-height: 200px; 
+  resize: vertical;
 }
 
-/* Image Upload Specifics */
 .image-upload-section {
   display: flex;
   flex-direction: column;
@@ -82,15 +80,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Remova o img específico se não estiver usando um PNG/JPG para o placeholder */
-  /* .image-placeholder img {
-    width: 100px;
-    height: 100px;
-    opacity: 0.5;
-  } */
 }
 
-/* Adicione estilos para mensagens de erro/sucesso se não tiver em outro lugar */
 .error-message {
     color: #dc3545;
     background-color: #f8d7da;

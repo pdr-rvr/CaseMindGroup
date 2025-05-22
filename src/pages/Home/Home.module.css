@@ -1,28 +1,62 @@
-/* src/pages/Home/Home.module.css */
 .homeContainer {
-  min-height: 100vh;
-  background-color: #f0f2f5; /* Light background for the overall page */
+    min-height: 100vh;
+    background-color: #f0f2f5;
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
 }
 
-.mainContent {
-  display: flex;
-  padding: 2rem;
-  gap: 2rem; /* Spacing between left and right columns */
-  max-width: 1200px; /* Max width to center content */
-  margin: 0 auto; /* Center the content */
+.topContentWrapper {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0 20px;
+    margin-bottom: 2rem;
+    flex-grow: 1;
+    align-items: flex-start;
 }
 
 .leftColumn {
-  flex: 2; /* Takes up more space than the right column */
+    flex: 2;
+    display: flex;
+    flex-direction: column;
 }
 
 .rightColumn {
-  flex: 1; /* Takes up less space */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.recentArticlesFooter {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .recentArticlesGrid {
-  display: flex;
-  justify-content: space-between; /* Distributes cards evenly */
-  gap: 1.5rem; /* Space between cards */
-  margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 992px) {
+    .topContentWrapper {
+        flex-direction: column;
+    }
+    .recentArticlesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .recentArticlesGrid {
+        grid-template-columns: 1fr;
+    }
 }

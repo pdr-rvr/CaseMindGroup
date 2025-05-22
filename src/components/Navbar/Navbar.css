@@ -1,21 +1,48 @@
-/* src/components/Navbar/Navbar.css */
 .navbar {
-    background-color: #ffffff;
-    padding: 15px 30px;
+    background-color: #fff;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    min-height: 90px;
+    box-sizing: border-box;
+}
+
+.navbar-container-inner {
+    width: 1140px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    position: relative;
-    z-index: 1000;
+    height: 100%;
+}
+
+.navbar-brand {
+    font-family: 'Irish Grover';
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 120%;
+    letter-spacing: 0px;
+    color: #000000;
+    text-decoration: none;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .navbar-brand a {
-    font-family: serif;
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #333;
     text-decoration: none;
+    color: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 }
 
 .navbar-nav {
@@ -24,104 +51,181 @@
     padding: 0;
     display: flex;
     align-items: center;
-    gap: 25px; /* Espaçamento entre os itens do menu */
+    height: 100%;
 }
 
 .nav-item {
-    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .nav-link {
-    color: #555;
     text-decoration: none;
-    font-size: 1.1em;
-    font-weight: 500;
-    transition: color 0.2s ease;
+    color: #333;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .nav-link:hover {
-    color: #000;
+    background-color: #eee;
 }
 
-/* Estilo para itens com separador vertical */
-.nav-item.separator::after {
-    content: '|';
-    margin-left: 12px; /* Espaço após o texto e antes do separador */
-    color: #ccc;
-    font-weight: 300;
+.separator {
+    position: relative;
+    padding-right: 20px;
 }
 
-/* Avatar do perfil */
+.separator::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 20px;
+    background-color: #000000;
+}
+
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.register-button {
+    background-color: #000000;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+    background-color: #000000;
+}
+
 .profile-dropdown-container {
-    margin-left: 15px; /* Espaço entre "Publicar" e o avatar */
-    /* Este item não deve ter separador após ele, então removemos a regra */
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+    margin-left: 20px;
 }
 
 .profile-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    overflow: hidden;
+    object-fit: cover;
+    border: 1px solid #ccc;
     cursor: pointer;
-    border: 1px solid #ddd;
-    background-color: #eee;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 .profile-avatar img {
     width: 100%;
     height: 100%;
+    border-radius: inherit;
     object-fit: cover;
 }
 
-/* Estilos do dropdown do perfil */
 .dropdown-menu {
     position: absolute;
     top: 100%;
     right: 0;
     background-color: #fff;
-    border: 1px solid #eee;
-    border-radius: 5px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     min-width: 160px;
-    padding: 8px 0;
-    margin-top: 10px;
-    z-index: 1001;
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+    display: block;
 }
 
 .dropdown-item {
-    display: block;
-    width: 100%;
-    padding: 10px 20px;
-    color: #333;
+    color: black;
+    padding: 12px 16px;
     text-decoration: none;
-    background-color: transparent;
+    display: block;
     border: none;
+    background: none;
+    width: 100%;
     text-align: left;
-    font-size: 1em;
     cursor: pointer;
-    transition: background-color 0.2s ease;
 }
 
 .dropdown-item:hover {
-    background-color: #f5f5f5;
+    background-color: #f1f1f1;
 }
 
-/* Estilos para o botão "Registrar" */
-.register-button {
-    background-color: #333; /* Fundo preto */
-    color: white;
-    padding: 8px 18px; /* Padding ajustado */
-    border-radius: 5px;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-    text-decoration: none; /* Remover sublinhado do link */
-    display: inline-block; /* Para que o padding funcione corretamente */
+@media (max-width: 1140px) {
+    .navbar-container-inner {
+        width: 100%;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
 }
 
-.register-button:hover {
-    background-color: #000;
-    color: white;
+@media (max-width: 768px) {
+    .navbar-container-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .nav-item {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .nav-item .nav-link,
+    .nav-item .register-button {
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .separator::after {
+        content: none;
+    }
+    
+    .auth-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+    }
+
+    .profile-dropdown-container {
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
+    }
+    .profile-dropdown-container .dropdown-menu {
+        left: 0;
+        right: auto;
+        width: 100%;
+        text-align: center;
+    }
 }
