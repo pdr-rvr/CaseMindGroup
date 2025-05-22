@@ -1,74 +1,79 @@
 // src/components/Navbar/Navbar.tsx
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styles from './Navbar.module.css'; // Importe os estilos como um módulo
-import { useAuth } from '../../context/AuthContext'; // Importe o hook de autenticação
+import { useAuth } from '../../context/AuthContext';
+import './Navbar.css'; // O CSS da Navbar será adaptado ao seu visual
 
 const Navbar: React.FC = () => {
-  const { isAuthenticated, user, logout } = useAuth(); // Pega o estado e funções do contexto
-  const [showDropdown, setShowDropdown] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
-
-  const handleLogoClick = () => {
-    // Usar navigate('/') é mais idiomático com React Router do que window.location.reload()
-    navigate('/');
-    // Se você realmente precisa de um refresh completo para recarregar dados iniciais,
-    // window.location.reload() pode ser usado, mas é menos performático.
-  };
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownMenuRef = useRef<HTMLDivElement>(null); // Ref para o menu dropdown em si
 
   const handleLogout = () => {
-    logout(); // Chama a função de logout do contexto
-    setShowDropdown(false); // Fecha o dropdown ao desconectar
-    navigate('/login'); // Redireciona para login após o logout
+    logout();
+    setDropdownOpen(false); // Fecha o dropdown ao desconectar
+    navigate('/login'); // Redireciona para login após logout
   };
 
-  return (
-    <nav className={styles.navbar}>
-      <div className={styles.logo} onClick={handleLogoClick}>
-        M.
-      </div>
-      {/* Container para a lista de navegação e o dropdown/botões de auth */}
-      <ul className={styles.navList}>
-        {/* Itens sempre visíveis (Home, Artigos) */}
-        <li className={styles.navItem}>
-          <Link to="/" className={styles.navLink}>Home</Link>
-        </li>
-        <li className={styles.navItem}>
-          <Link to="/articles" className={styles.navLink}>Artigos</Link>
-        </li>
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
+  // Efeito para fechar o dropdown ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownMenuRef.current && !dropdownMenuRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // URL da imagem de perfil: usa a do usuário se existir, senão um placeholder
+  // Assumo que 'user.profilePictureUrl' virá do backend e será o caminho completo ou URL
+  const profilePicture = user?.profilePictureUrl || '/images/default_profile.png'; //
+
+  return (
+    <nav className="navbar">
+      <div className="navbar-brand">
+        <Link to="/">M.</Link> {/* Logo "M." conforme suas imagens */}
+      </div>
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          <Link to="/" className="nav-link">Home</Link> {/* */}
+        </li>
+        <li className="nav-item separator"> {/* Adicionei a classe 'separator' para o '|' */}
+          <Link to="/articles" className="nav-link">Artigos</Link> {/* */}
+        </li>
         {isAuthenticated ? (
-          // Opções para usuário logado
           <>
-            <li className={styles.navItem}>
-              <Link to="/article/new" className={`${styles.navLink} ${styles.mainButton}`}>Publicar</Link> {/* Botão "Publicar" */}
+            <li className="nav-item">
+              <Link to="/create-article" className="nav-link">Publicar</Link>
             </li>
-            <li className={styles.navItem}> {/* Este li é para o dropdown */}
-              <div className={styles.userDropdownContainer} onClick={() => setShowDropdown(!showDropdown)}>
-                <img
-                  //src={user?.profilePictureUrl || 'https://via.placeholder.com/40'} // Use a URL da imagem do usuário ou um placeholder
-                  alt={user?.name || 'User'}
-                  className={styles.userAvatar}
-                />
-                {showDropdown && (
-                  <div className={styles.dropdownMenu}>
-                    <Link to={`/user/${user?.id}`} className={styles.dropdownItem} onClick={() => setShowDropdown(false)}>Perfil</Link>
-                    <button onClick={handleLogout} className={styles.dropdownItem}>Desconectar</button>
-                  </div>
-                )}
+            <li className="nav-item profile-dropdown-container">
+              <div className="profile-avatar" onClick={toggleDropdown}>
+                <img src={profilePicture} alt="Profile" /> {/* Imagem de perfil na bola */}
               </div>
+              {dropdownOpen && (
+                <div className="dropdown-menu" ref={dropdownMenuRef}>
+                  <Link to={`/edit-profile/${user?.id}`} className="dropdown-item" onClick={() => setDropdownOpen(false)}>
+                    Perfil
+                  </Link>
+                  <button onClick={handleLogout} className="dropdown-item">
+                    Desconectar
+                  </button>
+                </div>
+              )}
             </li>
           </>
         ) : (
-          // Opções para usuário não logado
-          <>
-            <li className={styles.navItem}>
-              <Link to="/login" className={styles.navLink}>Entrar</Link>
-            </li>
-            <li className={styles.navItem}>
-              <Link to="/register" className={`${styles.navLink} ${styles.mainButton}`}>Registrar</Link> {/* Botão "Registrar" */}
-            </li>
-          </>
+          <li className="nav-item">
+          </li>
         )}
       </ul>
     </nav>

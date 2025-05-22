@@ -6,6 +6,7 @@ interface UserInfo {
   id: number;
   name: string;
   email: string;
+  profilePictureUrl?: string;
   // Adicione outras propriedades do usuário que você precisa, como profilePictureUrl
   // profilePictureUrl?: string;
 }
@@ -50,6 +51,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               id: userData.id,
               name: userData.name,
               email: userData.email,
+              profilePictureUrl: userData.profilePictureUrl,
               // ... outras propriedades do usuário que o backend retorna
               // profilePictureUrl: userData.profilePictureUrl,
             });

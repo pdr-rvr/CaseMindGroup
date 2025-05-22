@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import './CreateArticlePage.module.css';
+import './CreateArticlePage.css'; // Seu CSS para esta página
 
 const CreateArticlePage: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -81,12 +81,12 @@ const CreateArticlePage: React.FC = () => {
   };
 
   return (
-    <div className="create-article-container"> {/* Usando a classe do seu CSS */}
-      <h1>Publicar Avaliação</h1>
-      {error && <div className="error-message">{error}</div>} {/* Use uma classe genérica para erro */}
-      {successMessage && <div className="success-message">{successMessage}</div>} {/* Use uma classe genérica para sucesso */}
-      <form onSubmit={handleSave} className="article-form"> {/* Usando a classe do seu CSS */}
-        <div className="form-section"> {/* Usando a classe do seu CSS */}
+    <div className="create-article-container">
+      <h1>Novo Artigo</h1> {/* Título conforme a imagem */}
+      {error && <div className="error-message">{error}</div>}
+      {successMessage && <div className="success-message">{successMessage}</div>}
+      <form onSubmit={handleSave} className="article-form">
+        <div className="form-section">
           <label htmlFor="title">Título</label>
           <input
             type="text"
@@ -99,16 +99,16 @@ const CreateArticlePage: React.FC = () => {
           />
         </div>
 
-        <div className="form-section image-upload-section"> {/* Usando as classes do seu CSS */}
+        <div className="form-section image-upload-section">
           <label>Inserir imagem</label>
-          <div className="image-input-group"> {/* Usando a classe do seu CSS */}
+          <div className="image-input-group">
             <input
               type="text"
               readOnly
               value={imageFile ? imageFile.name : 'Adicione uma imagem'}
               placeholder="Adicione uma imagem"
             />
-            <label htmlFor="image-upload" className="select-button"> {/* Usando a classe do seu CSS */}
+            <label htmlFor="image-upload" className="select-button">
               Selecionar
             </label>
             <input
@@ -116,26 +116,32 @@ const CreateArticlePage: React.FC = () => {
               id="image-upload"
               accept="image/*"
               onChange={handleImageChange}
-              style={{ display: 'none' }} // Oculta o input de arquivo nativo
+              style={{ display: 'none' }}
             />
           </div>
-          <div className="image-preview"> {/* Usando a classe do seu CSS */}
+          <div className="image-preview">
             {imageFile ? (
               <img src={URL.createObjectURL(imageFile)} alt="Preview" />
             ) : (
-              <div className="image-placeholder"> {/* Usando a classe do seu CSS */}
-                 {/* Você pode adicionar um ícone ou texto aqui */}
-                 Nenhuma imagem selecionada
+              <div className="image-placeholder">
+                {/* Ícone de galeria conforme a imagem */}
+                {/* Você pode usar um SVG inline ou uma imagem PNG/JPG para este ícone */}
+                {/* Exemplo com SVG simples: */}
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
               </div>
             )}
           </div>
         </div>
 
-        <div className="form-section"> {/* Usando a classe do seu CSS */}
+        <div className="form-section">
           <label htmlFor="content">Texto</label>
           <textarea
             id="content"
-            placeholder="Escreva sua avaliação"
+            placeholder="Escreva seu artigo" 
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={10}
@@ -144,10 +150,10 @@ const CreateArticlePage: React.FC = () => {
           ></textarea>
         </div>
 
-        <div className="form-actions"> {/* Usando a classe do seu CSS */}
-          <button type="button" className="cancel-button" onClick={handleCancel} disabled={loading}>Cancelar</button> {/* Usando a classe do seu CSS */}
-          <button type="submit" className="save-button" disabled={loading}> {/* Usando a classe do seu CSS */}
-            {loading ? 'Publicando...' : 'Publicar'}
+        <div className="form-actions">
+          <button type="button" className="cancel-button" onClick={handleCancel} disabled={loading}>Cancelar</button> {/* Estilo conforme imagem */}
+          <button type="submit" className="save-button" disabled={loading}> {/* Estilo conforme imagem */}
+            {loading ? 'Salvando...' : 'Salvar'}
           </button>
         </div>
       </form>

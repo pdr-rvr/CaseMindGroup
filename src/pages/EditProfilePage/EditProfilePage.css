@@ -1,0 +1,162 @@
+/* src/pages/EditProfilePage/EditProfilePage.css */
+.edit-profile-container {
+    max-width: 900px; /* Aumenta um pouco para as duas colunas */
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Removi text-align: center; do container para alinhar o form à esquerda */
+}
+
+.edit-profile-container h1 {
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2em;
+    text-align: left; /* Alinha o título à esquerda */
+}
+
+.profile-form {
+    display: flex; /* Habilita flexbox para as colunas */
+    gap: 40px; /* Espaço entre as colunas */
+}
+
+.left-column {
+    flex: 1; /* Ocupa o máximo de espaço possível */
+}
+
+.right-column {
+    flex-basis: 300px; /* Largura fixa para a coluna da imagem */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinha a imagem no topo */
+    padding-top: 50px; /* Ajusta a posição vertical da imagem para alinhar com o form */
+}
+
+.profile-form .form-section {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.profile-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.profile-form input[type="text"],
+.profile-form input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+/* Profile Image Specifics */
+.profile-image-preview.large-preview { /* Nova classe para a imagem maior */
+    margin: 0; /* Remove margem automática */
+    width: 250px; /* Largura maior conforme a imagem */
+    height: 250px; /* Altura maior conforme a imagem */
+    border-radius: 8px; /* Borda mais quadrada, não circular */
+    overflow: hidden;
+    border: 1px solid #eee; /* Borda sutil */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.profile-image-preview.large-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Reutilizando estilos de input-group e select-button do CreateArticlePage.css */
+/* Certifique-se que estas classes estão disponíveis (no CreateArticlePage.css ou em um Common.css) */
+.image-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.image-input-group input[type="text"][readOnly] {
+    flex-grow: 1;
+    background-color: #f9f9f9;
+    cursor: default;
+}
+.select-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+.select-button:hover {
+    background-color: #0056b3;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.form-actions button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button {
+    background-color: #f84d4d; /* Tom de vermelho da imagem */
+    color: white;
+}
+
+.cancel-button:hover {
+    background-color: #e53935;
+}
+
+.save-button {
+    background-color: #333; /* Tom de preto da imagem */
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #000;
+}
+
+/* Estilos para mensagens de feedback (se não tiver em outro CSS) */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.success-message {
+    color: #28a745;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.loading-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+    color: #007bff;
+}

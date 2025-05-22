@@ -73,26 +73,6 @@
 .select-button:hover {
   background-color: #0056b3;
 }
-
-.image-preview {
-  margin-top: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 200px; /* Altura fixa para o preview */
-  background-color: #f0f0f0;
-  border: 1px dashed #ccc;
-  border-radius: 5px;
-  overflow: hidden; /* Garante que a imagem não saia dos limites */
-}
-
-.image-preview img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* Mantém a proporção da imagem */
-}
-
 .image-placeholder {
   color: #aaa;
   font-size: 1.2em;
@@ -102,44 +82,30 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.image-placeholder img {
-  width: 100px;
-  height: 100px;
-  opacity: 0.5;
-}
-
-
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 15px;
-  margin-top: 30px;
+  /* Remova o img específico se não estiver usando um PNG/JPG para o placeholder */
+  /* .image-placeholder img {
+    width: 100px;
+    height: 100px;
+    opacity: 0.5;
+  } */
 }
 
-.form-actions button {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+/* Adicione estilos para mensagens de erro/sucesso se não tiver em outro lugar */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
 }
-
-.cancel-button {
-  background-color: #dc3545;
-  color: white;
-}
-
-.cancel-button:hover {
-  background-color: #c82333;
-}
-
-.save-button {
-  background-color: #28a745;
-  color: white;
-}
-
-.save-button:hover {
-  background-color: #218838;
+.success-message {
+    color: #28a745;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
 }

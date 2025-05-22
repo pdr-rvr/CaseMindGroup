@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import './EditProfilePage.module.css';
+import './EditProfilePage.css'; // Seu CSS para esta página
 
 const EditProfilePage: React.FC = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const EditProfilePage: React.FC = () => {
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImageUrl, setProfileImageUrl] = useState<string>('/images/default_profile.png');
   const [name, setName] = useState('');
-  const [lastName, setLastName] = useState(''); // Mantenha se você tem este campo
+  const [lastName, setLastName] = useState('');
   const [pageLoading, setPageLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -21,7 +21,7 @@ const EditProfilePage: React.FC = () => {
       setError(null);
       setSuccessMessage(null);
 
-      if (authLoading) return;
+      if (authLoading) return; // Espera o AuthContext carregar
 
       const token = getToken();
 
@@ -47,8 +47,8 @@ const EditProfilePage: React.FC = () => {
 
         const data = await response.json();
         setName(data.name || '');
-        setLastName(data.lastName || ''); // Preenche sobrenome se o backend retornar
-        setProfileImageUrl(data.profilePictureUrl || '/images/default_profile.png');
+        setLastName(data.lastName || '');
+        setProfileImageUrl(data.profilePictureUrl || '/images/default_profile.png'); //
       } catch (err: any) {
         console.error('Erro ao buscar perfil:', err);
         setError(err.message || 'Ocorreu um erro ao carregar o perfil.');
@@ -85,8 +85,7 @@ const EditProfilePage: React.FC = () => {
 
     const formData = new FormData();
     formData.append('name', name);
-    // Se tiver sobrenome, adicione aqui
-    // formData.append('lastName', lastName);
+    formData.append('lastName', lastName); // Incluindo o sobrenome
 
     if (profileImageFile) {
       formData.append('profile_picture', profileImageFile);
@@ -108,6 +107,9 @@ const EditProfilePage: React.FC = () => {
 
       const result = await response.json();
       setSuccessMessage(result.message || 'Perfil atualizado com sucesso!');
+      // TODO: Se seu AuthContext tem um método para atualizar o usuário, chame-o aqui
+      // para que a Navbar reflita as mudanças imediatamente sem refresh.
+      // Ex: updateUserInContext(result.user);
 
     } catch (err: any) {
       console.error('Erro ao salvar perfil:', err);
@@ -121,7 +123,6 @@ const EditProfilePage: React.FC = () => {
     navigate(-1);
   };
 
-  // Mantenha as classes de loading e error message, você pode adicionar estilização para elas nos seus CSS
   if (pageLoading || authLoading) {
     return <div className="loading-message">Carregando perfil...</div>;
   }
@@ -131,70 +132,70 @@ const EditProfilePage: React.FC = () => {
   }
 
   return (
-    <div className="edit-profile-container"> {/* Usando a classe do seu CSS */}
-      <h1>Editar Perfil</h1>
+    <div className="edit-profile-container"> {/* Container principal do seu CSS */}
+      <h1>Editar Perfil</h1> {/* Título conforme a imagem */}
       {error && <div className="error-message">{error}</div>}
       {successMessage && <div className="success-message">{successMessage}</div>}
-      <form onSubmit={handleSave} className="profile-form"> {/* Usando a classe do seu CSS */}
-        <div className="form-section image-upload-section"> {/* Usando as classes do seu CSS */}
-          <label htmlFor="avatar-upload">Inserir avatar</label>
-          <div className="image-input-group"> {/* Usando a classe do seu CSS (reutilizada) */}
-            <input
-              type="text"
-              readOnly
-              value={profileImageFile ? profileImageFile.name : (profileImageUrl && profileImageUrl !== '/images/default_profile.png' ? 'Imagem atual selecionada' : 'Adicione um avatar')}
-              placeholder="Adicione um avatar"
-            />
-            <label htmlFor="avatar-upload" className="select-button"> {/* Usando a classe do seu CSS (reutilizada) */}
-              Selecionar
-            </label>
-            <input
-              type="file"
-              id="avatar-upload"
-              accept="image/*"
-              onChange={handleImageChange}
-              style={{ display: 'none' }}
-            />
-          </div>
-        </div>
+      <form onSubmit={handleSave} className="profile-form"> {/* Formulário do seu CSS */}
+        <div className="left-column"> {/* Coluna esquerda para campos do formulário */}
+            <div className="form-section image-upload-section">
+                <label htmlFor="avatar-upload">Inserir avatar</label>
+                <div className="image-input-group">
+                    <input
+                        type="text"
+                        readOnly
+                        value={profileImageFile ? profileImageFile.name : (profileImageUrl && profileImageUrl !== '/images/default_profile.png' ? 'Imagem atual' : 'Adicione um avatar')}
+                        placeholder="Adicione um avatar"
+                    />
+                    <label htmlFor="avatar-upload" className="select-button">
+                        Selecionar
+                    </label>
+                    <input
+                        type="file"
+                        id="avatar-upload"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        style={{ display: 'none' }}
+                    />
+                </div>
+            </div>
 
-        <div className="profile-image-preview"> {/* Usando a classe do seu CSS */}
-          <img src={profileImageUrl} alt="Profile Preview" />
-        </div>
+            <div className="form-section">
+                <label htmlFor="name">Nome</label>
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="John"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    disabled={pageLoading}
+                />
+            </div>
 
-        <div className="form-section"> {/* Usando a classe do seu CSS */}
-          <label htmlFor="name">Nome</label>
-          <input
-            type="text"
-            id="name"
-            placeholder="John"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            disabled={pageLoading}
-          />
-        </div>
+            <div className="form-section">
+                <label htmlFor="lastName">Sobrenome</label>
+                <input
+                    type="text"
+                    id="lastName"
+                    placeholder="Doe"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    disabled={pageLoading}
+                />
+            </div>
 
-        {/* Mantenha este bloco se você tiver 'lastName' no seu modelo de usuário no backend */}
-        {/*
-        <div className="form-section">
-          <label htmlFor="lastName">Sobrenome</label>
-          <input
-            type="text"
-            id="lastName"
-            placeholder="Doe"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            disabled={pageLoading}
-          />
+            <div className="form-actions">
+                <button type="button" className="cancel-button" onClick={handleCancel} disabled={pageLoading}>Cancelar</button> {/* Estilo conforme imagem */}
+                <button type="submit" className="save-button" disabled={pageLoading}> {/* Estilo conforme imagem */}
+                    {pageLoading ? 'Salvando...' : 'Salvar'}
+                </button>
+            </div>
         </div>
-        */}
-
-        <div className="form-actions"> {/* Usando a classe do seu CSS */}
-          <button type="button" className="cancel-button" onClick={handleCancel} disabled={pageLoading}>Cancelar</button> {/* Usando a classe do seu CSS */}
-          <button type="submit" className="save-button" disabled={pageLoading}> {/* Usando a classe do seu CSS */}
-            {pageLoading ? 'Salvando...' : 'Salvar'}
-          </button>
+        <div className="right-column"> {/* Coluna direita para a imagem de perfil */}
+            <div className="profile-image-preview large-preview"> {/* Adicionei 'large-preview' para ter uma imagem maior */}
+                <img src={profileImageUrl} alt="Profile Preview" />
+            </div>
         </div>
       </form>
     </div>
