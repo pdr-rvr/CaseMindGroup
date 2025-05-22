@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet  } from 'react-router-dom';
 import HomePage from './pages/Home/Home'; // Sua HomePage
 import ArticlesPage from './pages/ArticlesPage/ArticlesPage'; // A nova ArticlesPage
-import ArticleDetailPage from './pages/ArticlesPage/ArticlesPage'; // Para a página de detalhes de um artigo
 import Navbar from './components/Navbar/Navbar' // Seu componente de navegação
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
@@ -10,7 +9,8 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import CreateArticlePage from './pages/CreateArticlePage/CreateArticlePage';
 import EditProfilePage from './pages/EditProfilePage/EditProfilePage';
-
+import MyArticlesPage from './pages/MyArticlesPage/MyArticlesPage';
+import EditArticlePage from './pages/EditArticlePage/EditArticlePage';
 
 const App: React.FC = () => {
   return (
@@ -35,9 +35,9 @@ const App: React.FC = () => {
         <Route
           element={
             <>
-              <Navbar /> {/* A Navbar é renderizada aqui */}
+              <Navbar />
               <main>
-                <Outlet /> {/* Onde o conteúdo da rota filha será renderizado */}
+                <Outlet />
               </main>
             </>
           }
@@ -50,7 +50,6 @@ const App: React.FC = () => {
           */}
           <Route path="/" element={<HomePage />} />
           <Route path="/articles" element={<ArticlesPage />} />
-          <Route path="/articles/:id" element={<ArticleDetailPage />} />
 
           {/*
             Subgrupo 2.2: Rotas PROTEGIDAS que usam o Layout da Navbar
@@ -61,10 +60,12 @@ const App: React.FC = () => {
             As rotas filhas deste <ProtectedRoute> serão renderizadas dentro do <Outlet> dele.
           */}
           <Route element={<ProtectedRoute />}>
-            {/* Rotas que exigem autenticação - AGORA COM AS ROTAS CORRETAS */}
-            <Route path="/create-article" element={<CreateArticlePage />} /> {/* Corrigido: /create-article */}
-            <Route path="/edit-profile/:id" element={<EditProfilePage />} />   {/* Corrigido: /edit-profile/:id */}
-            {/* Adicione outras rotas que precisam de autenticação aqui */}
+            <Route path="/create-article" element={<CreateArticlePage />} />
+            <Route path="/edit-profile/:id" element={<EditProfilePage />} />
+            {/* ADICIONE ESTA ROTA PARA MEUS ARTIGOS */}
+            <Route path="/my-articles" element={<MyArticlesPage />} />
+            {/* NOVO: Rota para editar artigo */}
+            <Route path="/edit-article/:id" element={<EditArticlePage />} /> {/* Precisamos criar EditArticlePage */}
           </Route>
         </Route>
 

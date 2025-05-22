@@ -1,0 +1,123 @@
+/* src/components/ArticleCard/ArticleCard.css (Adicione ou ajuste) */
+
+.article-card {
+    position: relative; /* Necessário para posicionar o botão de edição */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.article-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block; /* Para o link ocupar o espaço do cartão */
+    flex-grow: 1; /* Para o link ocupar todo o espaço disponível */
+}
+
+.article-card-image {
+    width: 100%;
+    height: 200px; /* Altura fixa para as imagens dos cards */
+    object-fit: cover; /* Garante que a imagem cubra o espaço sem distorcer */
+    display: block;
+}
+
+.article-card-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.article-card-title {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #333;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limita o título a 2 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.article-card-description {
+    font-size: 0.95em;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limita a descrição a 3 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.article-card-meta {
+    display: flex;
+    align-items: center;
+    font-size: 0.85em;
+    color: #888;
+    margin-top: auto; /* Empurra para a parte inferior do card */
+}
+
+.article-card-author-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    border: 1px solid #eee;
+}
+
+.article-card-author-name {
+    font-weight: 500;
+    color: #555;
+    margin-right: 5px;
+}
+
+.article-card-date {
+    font-style: italic;
+}
+
+/* Novo estilo para o botão de edição */
+.edit-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #f0f0f0; /* Fundo cinza claro */
+    border: 1px solid #ccc;
+    border-radius: 50%; /* Botão redondo */
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    padding: 0; /* Remover padding padrão do botão */
+    color: #555; /* Cor do ícone, se for um SVG ou texto */
+}
+
+.edit-button:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+}
+
+.edit-button img {
+    width: 20px; /* Tamanho do ícone */
+    height: 20px;
+    display: block; /* Para remover espaçamento extra */
+}

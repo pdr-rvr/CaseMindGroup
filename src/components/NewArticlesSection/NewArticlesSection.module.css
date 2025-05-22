@@ -1,42 +1,29 @@
 /* src/components/NewArticlesSection/NewArticlesSection.module.css */
 .newArticlesSection {
-  background-color: #333; /* Dark background as in the image */
-  color: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  height: 100%; /* Take full height of its container */
-  display: flex;
-  flex-direction: column;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-.sectionTitle {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #fff;
+.newArticlesSection h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
 }
 
-.newArticleItem {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Subtle separator */
+.articlesList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaço entre os ArticleListItem */
 }
 
-.newArticleItem:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.newArticleTitle {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  line-height: 1.4;
-  color: #fff;
-}
-
-.newArticleContent {
-  font-size: 0.9rem;
-  color: #ccc;
-  line-height: 1.5;
+.newArticlesSection p {
+    text-align: center;
+    color: #777;
+    font-size: 1em;
+    margin-top: 15px;
 }

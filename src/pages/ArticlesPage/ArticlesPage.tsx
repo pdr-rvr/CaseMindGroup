@@ -1,8 +1,8 @@
-// src/pages/ArticlesPage.tsx
 import React, { useEffect, useState } from 'react';
 import { Article } from '../../types/article';
-import { getNewestArticles } from '../../services/articleService'; // Importa a função de serviço
-import ArticleCard from '../../components/ArticleCard/ArticleCard'; // Seu componente de cartão de artigo
+import { articleService } from '../../services/articleService';
+import ArticleCard from '../../components/ArticleCard/ArticleCard'; 
+import './ArticlesPage.css';
 
 const ArticlesPage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -13,10 +13,10 @@ const ArticlesPage: React.FC = () => {
     const fetchArticles = async () => {
       try {
         setLoading(true);
-        const data = await getNewestArticles();
+        const data = await articleService.getAllArticles(); 
         setArticles(data);
       } catch (err) {
-        console.error("Failed to fetch articles:", err);
+        console.error("Failed to fetch all articles:", err);
         setError("Erro ao carregar artigos. Por favor, tente novamente mais tarde.");
       } finally {
         setLoading(false);
@@ -24,7 +24,7 @@ const ArticlesPage: React.FC = () => {
     };
 
     fetchArticles();
-  }, []); // O array vazio garante que o useEffect rode apenas uma vez ao montar o componente
+  }, []);
 
   if (loading) {
     return <div className="articles-page-container">Carregando artigos...</div>;
@@ -40,7 +40,7 @@ const ArticlesPage: React.FC = () => {
 
   return (
     <div className="articles-page-container">
-      <h1>Artigos Mais Recentes</h1>
+      <h1>Todos os Artigos</h1>
       <div className="articles-grid">
         {articles.map((article, index) => (
           <ArticleCard key={article.id} article={article} index={index} />

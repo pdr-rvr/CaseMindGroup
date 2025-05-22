@@ -1,0 +1,77 @@
+/* src/components/ArticleListItem/ArticleListItem.css */
+.article-list-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block; /* Para o link ocupar o espaço do item */
+}
+
+.article-list-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-list-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.article-list-item-image {
+    width: 100px; /* Tamanho fixo para a imagem do item da lista */
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 15px;
+    flex-shrink: 0; /* Impede que a imagem encolha */
+}
+
+.article-list-item-content {
+    flex-grow: 1;
+}
+
+.article-list-item-content h3 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 5px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limita o título a 2 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.article-list-item-content p {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limita o texto a 2 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.article-list-item-meta {
+    font-size: 0.8em;
+    color: #888;
+}
+
+.article-list-item-meta .author {
+    font-weight: 500;
+    color: #555;
+    margin-right: 8px;
+}
+
+.article-list-item-meta .date {
+    font-style: italic;
+}

@@ -12,15 +12,14 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    setDropdownOpen(false); // Fecha o dropdown ao desconectar
-    navigate('/login'); // Redireciona para a página de login após o logout
+    setDropdownOpen(false);
+    navigate('/login');
   };
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  // Efeito para fechar o dropdown ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownMenuRef.current && !dropdownMenuRef.current.contains(event.target as Node)) {
@@ -45,16 +44,14 @@ const Navbar: React.FC = () => {
         <li className="nav-item">
           <Link to="/" className="nav-link">Home</Link>
         </li>
-        <li className="nav-item separator"> {/* 'Artigos' sempre visível e com separador */}
+        <li className="nav-item separator">
           <Link to="/articles" className="nav-link">Artigos</Link>
         </li>
         {isAuthenticated ? (
           <>
-            {/* Itens visíveis APENAS quando logado */}
             <li className="nav-item">
               <Link to="/create-article" className="nav-link">Publicar</Link>
             </li>
-            {/* Dropdown do perfil (sem separador, pois é o último) */}
             <li className="nav-item profile-dropdown-container">
               <div className="profile-avatar" onClick={toggleDropdown}>
                 <img src={profilePicture} alt="Profile" />
@@ -63,6 +60,10 @@ const Navbar: React.FC = () => {
                 <div className="dropdown-menu" ref={dropdownMenuRef}>
                   <Link to={`/edit-profile/${user?.id}`} className="dropdown-item" onClick={() => setDropdownOpen(false)}>
                     Perfil
+                  </Link>
+                  {/* NOVO ITEM: Meus Artigos */}
+                  <Link to={`/my-articles`} className="dropdown-item" onClick={() => setDropdownOpen(false)}>
+                    Meus Artigos
                   </Link>
                   <button onClick={handleLogout} className="dropdown-item">
                     Desconectar
@@ -73,11 +74,10 @@ const Navbar: React.FC = () => {
           </>
         ) : (
           <>
-            {/* Itens visíveis APENAS quando NÃO logado */}
-            <li className="nav-item separator"> {/* 'Entrar' com separador */}
+            <li className="nav-item separator">
               <Link to="/login" className="nav-link">Login</Link>
             </li>
-            <li className="nav-item"> {/* 'Registrar' como botão, sem separador */}
+            <li className="nav-item">
               <Link to="/register" className="nav-link register-button">Registrar</Link>
             </li>
           </>

@@ -1,54 +1,77 @@
 /* src/components/FeaturedArticle/FeaturedArticle.module.css */
+/* ...seus estilos existentes... */
+
+.featuredArticleLink {
+    text-decoration: none; /* Remove o sublinhado do link */
+    color: inherit; /* Mantém a cor do texto padrão */
+    display: block; /* Faz com que o link ocupe todo o espaço do container */
+}
+
 .featuredArticle {
-  display: flex;
-  background-color: #f8f8f8;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-  height: 350px; /* Fixed height as in the image */
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column; /* Para a imagem ficar acima do conteúdo */
+    height: 100%; /* Garante que o card ocupe a altura total no grid */
+}
+
+.featuredArticle:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .featuredImage {
-  width: 60%; /* Occupies more space as seen in the image */
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 300px; /* Altura fixa para a imagem em destaque */
+    object-fit: cover;
+    display: block;
 }
 
 .content {
-  width: 40%;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Para o conteúdo ocupar o espaço restante */
 }
 
 .title {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 1rem;
-  line-height: 1.2;
+    font-size: 2em;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limita o título a 3 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .meta {
-  font-size: 0.9rem;
-  color: #777;
-  margin-bottom: 1.5rem;
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 20px;
+    font-style: italic;
 }
 
 .readMoreButton {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+    align-self: flex-start; /* Alinha o botão à esquerda */
+    margin-top: auto; /* Empurra para o final do card */
 }
 
 .readMoreButton:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
