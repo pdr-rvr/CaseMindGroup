@@ -1,0 +1,88 @@
+/* src/styles/AuthForms.css */
+
+.auth-form-card {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px; /* Largura máxima do cartão do formulário */
+  text-align: center;
+}
+
+.auth-form-card h2 {
+  margin-bottom: 30px;
+  color: #333;
+  font-size: 1.8em;
+}
+
+.auth-form .form-group {
+  margin-bottom: 20px;
+  text-align: left; /* Alinha labels e inputs à esquerda */
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.auth-form input[type="email"],
+.auth-form input[type="password"],
+.auth-form input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1em;
+  box-sizing: border-box; /* Garante que padding não aumente a largura */
+}
+
+.forgot-password-link {
+  display: block;
+  text-align: right;
+  margin-top: -10px; /* Ajuste para encaixar melhor */
+  margin-bottom: 20px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #333; /* Botão preto */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px; /* Espaço acima do botão */
+}
+
+.auth-button:hover {
+  background-color: #555;
+}
+
+.auth-bottom-link {
+  margin-top: 25px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.auth-bottom-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-bottom-link a:hover {
+  text-decoration: underline;
+}

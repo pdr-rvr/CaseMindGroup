@@ -1,0 +1,79 @@
+/* src/components/AuthLayout/AuthLayout.css */
+
+.auth-layout-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw; /* Garante que ocupe a largura total */
+  overflow: hidden; /* Evita scroll indesejado se houver overflow */
+}
+
+.auth-layout-left {
+  flex: 1;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  position: relative; /* Para garantir que o M. não seja cortado se o conteúdo do form for grande */
+  /* Remove width: 50% para usar flex: 1 */
+}
+
+.auth-logo {
+  font-family: 'Times New Roman', serif;
+  font-size: 8em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  /* Garante que o M. não diminua muito */
+  flex-shrink: 0;
+}
+
+.auth-slogan {
+  font-size: 1.2em;
+  color: #aaa;
+  flex-shrink: 0;
+  padding: 0 10px; /* Adiciona um pouco de padding lateral */
+}
+
+.auth-layout-right {
+  flex: 1;
+  background-color: #fff;
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center;     /* Centraliza verticalmente */
+  padding: 20px;
+  /* Se você sentir que o formulário está muito grande em telas pequenas
+     dentro do lado direito, pode adicionar um max-width aqui,
+     mas o .auth-form-card já tem um. */
+  overflow-y: auto; /* Adiciona scroll se o conteúdo for muito alto */
+}
+
+/* Responsividade básica para telas menores */
+@media (max-width: 768px) {
+  .auth-layout-container {
+    flex-direction: column;
+  }
+
+  .auth-layout-left {
+    min-height: 250px; /* Um pouco mais de altura */
+    padding: 30px 20px;
+  }
+
+  .auth-logo {
+    font-size: 5em;
+  }
+
+  .auth-layout-right {
+    min-height: 50vh; /* Ocupa pelo menos metade da altura em telas pequenas */
+    padding: 30px 20px; /* Mais padding para o formulário */
+  }
+}
+
+/* Para telas muito pequenas, garantir que o formulário não seja cortado */
+@media (max-width: 480px) {
+  .auth-form-card {
+    padding: 20px; /* Reduz o padding do cartão do formulário */
+  }
+}
