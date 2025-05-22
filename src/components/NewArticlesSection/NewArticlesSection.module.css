@@ -1,0 +1,42 @@
+/* src/components/NewArticlesSection/NewArticlesSection.module.css */
+.newArticlesSection {
+  background-color: #333; /* Dark background as in the image */
+  color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  height: 100%; /* Take full height of its container */
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+.newArticleItem {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Subtle separator */
+}
+
+.newArticleItem:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.newArticleTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  color: #fff;
+}
+
+.newArticleContent {
+  font-size: 0.9rem;
+  color: #ccc;
+  line-height: 1.5;
+}

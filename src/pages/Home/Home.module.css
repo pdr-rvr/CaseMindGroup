@@ -1,0 +1,28 @@
+/* src/pages/Home/Home.module.css */
+.homeContainer {
+  min-height: 100vh;
+  background-color: #f0f2f5; /* Light background for the overall page */
+}
+
+.mainContent {
+  display: flex;
+  padding: 2rem;
+  gap: 2rem; /* Spacing between left and right columns */
+  max-width: 1200px; /* Max width to center content */
+  margin: 0 auto; /* Center the content */
+}
+
+.leftColumn {
+  flex: 2; /* Takes up more space than the right column */
+}
+
+.rightColumn {
+  flex: 1; /* Takes up less space */
+}
+
+.recentArticlesGrid {
+  display: flex;
+  justify-content: space-between; /* Distributes cards evenly */
+  gap: 1.5rem; /* Space between cards */
+  margin-top: 2rem;
+}

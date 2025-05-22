@@ -1,0 +1,54 @@
+/* src/components/FeaturedArticle/FeaturedArticle.module.css */
+.featuredArticle {
+  display: flex;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  height: 350px; /* Fixed height as in the image */
+}
+
+.featuredImage {
+  width: 60%; /* Occupies more space as seen in the image */
+  height: 100%;
+  object-fit: cover;
+}
+
+.content {
+  width: 40%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.meta {
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 1.5rem;
+}
+
+.readMoreButton {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.readMoreButton:hover {
+  background-color: #0056b3;
+}
