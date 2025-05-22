@@ -2,18 +2,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import './Navbar.css'; // O CSS da Navbar será adaptado ao seu visual
+import './Navbar.css';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownMenuRef = useRef<HTMLDivElement>(null); // Ref para o menu dropdown em si
+  const dropdownMenuRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
     logout();
     setDropdownOpen(false); // Fecha o dropdown ao desconectar
-    navigate('/login'); // Redireciona para login após logout
+    navigate('/login'); // Redireciona para a página de login após o logout
   };
 
   const toggleDropdown = () => {
@@ -34,30 +34,30 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
-  // URL da imagem de perfil: usa a do usuário se existir, senão um placeholder
-  // Assumo que 'user.profilePictureUrl' virá do backend e será o caminho completo ou URL
-  const profilePicture = user?.profilePictureUrl || '/images/default_profile.png'; //
+  const profilePicture = user?.profilePictureUrl || '/images/default_profile.png';
 
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/">M.</Link> {/* Logo "M." conforme suas imagens */}
+        <Link to="/">M.</Link>
       </div>
       <ul className="navbar-nav">
         <li className="nav-item">
-          <Link to="/" className="nav-link">Home</Link> {/* */}
+          <Link to="/" className="nav-link">Home</Link>
         </li>
-        <li className="nav-item separator"> {/* Adicionei a classe 'separator' para o '|' */}
-          <Link to="/articles" className="nav-link">Artigos</Link> {/* */}
+        <li className="nav-item separator"> {/* 'Artigos' sempre visível e com separador */}
+          <Link to="/articles" className="nav-link">Artigos</Link>
         </li>
         {isAuthenticated ? (
           <>
+            {/* Itens visíveis APENAS quando logado */}
             <li className="nav-item">
               <Link to="/create-article" className="nav-link">Publicar</Link>
             </li>
+            {/* Dropdown do perfil (sem separador, pois é o último) */}
             <li className="nav-item profile-dropdown-container">
               <div className="profile-avatar" onClick={toggleDropdown}>
-                <img src={profilePicture} alt="Profile" /> {/* Imagem de perfil na bola */}
+                <img src={profilePicture} alt="Profile" />
               </div>
               {dropdownOpen && (
                 <div className="dropdown-menu" ref={dropdownMenuRef}>
@@ -72,8 +72,15 @@ const Navbar: React.FC = () => {
             </li>
           </>
         ) : (
-          <li className="nav-item">
-          </li>
+          <>
+            {/* Itens visíveis APENAS quando NÃO logado */}
+            <li className="nav-item separator"> {/* 'Entrar' com separador */}
+              <Link to="/login" className="nav-link">Login</Link>
+            </li>
+            <li className="nav-item"> {/* 'Registrar' como botão, sem separador */}
+              <Link to="/register" className="nav-link register-button">Registrar</Link>
+            </li>
+          </>
         )}
       </ul>
     </nav>

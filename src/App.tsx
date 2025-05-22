@@ -45,6 +45,7 @@ const App: React.FC = () => {
           {/*
             Subgrupo 2.1: Rotas PÚBLICAS que usam o Layout da Navbar
             Estas rotas são acessíveis a QUALQUER usuário (logado ou deslogado).
+            A Home Page é o ponto de entrada principal e sempre acessível.
             Elas serão renderizadas dentro do <Outlet> do layout principal.
           */}
           <Route path="/" element={<HomePage />} />
@@ -60,9 +61,9 @@ const App: React.FC = () => {
             As rotas filhas deste <ProtectedRoute> serão renderizadas dentro do <Outlet> dele.
           */}
           <Route element={<ProtectedRoute />}>
-            {/* Rotas que exigem autenticação */}
-            <Route path="/create-article" element={<CreateArticlePage />} />
-            <Route path="/edit-profile/:id" element={<EditProfilePage />} />
+            {/* Rotas que exigem autenticação - AGORA COM AS ROTAS CORRETAS */}
+            <Route path="/create-article" element={<CreateArticlePage />} /> {/* Corrigido: /create-article */}
+            <Route path="/edit-profile/:id" element={<EditProfilePage />} />   {/* Corrigido: /edit-profile/:id */}
             {/* Adicione outras rotas que precisam de autenticação aqui */}
           </Route>
         </Route>
@@ -77,5 +78,4 @@ const App: React.FC = () => {
     </Router>
   );
 };
-
 export default App;

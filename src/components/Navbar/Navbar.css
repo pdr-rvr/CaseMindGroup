@@ -1,17 +1,17 @@
 /* src/components/Navbar/Navbar.css */
 .navbar {
-    background-color: #ffffff; /* Fundo branco conforme as imagens */
-    padding: 15px 30px; /* Padding conforme suas imagens */
+    background-color: #ffffff;
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* Sombra sutil como na imagem */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     position: relative;
     z-index: 1000;
 }
 
 .navbar-brand a {
-    font-family: serif; /* "M." tem uma fonte serifada */
+    font-family: serif;
     font-size: 2.5em;
     font-weight: bold;
     color: #333;
@@ -32,7 +32,7 @@
 }
 
 .nav-link {
-    color: #555; /* Cor cinza mais clara para os links */
+    color: #555;
     text-decoration: none;
     font-size: 1.1em;
     font-weight: 500;
@@ -43,10 +43,10 @@
     color: #000;
 }
 
-/* Separador '|' conforme as imagens */
-.navbar-nav .separator::after {
+/* Estilo para itens com separador vertical */
+.nav-item.separator::after {
     content: '|';
-    margin-left: 12px; /* Ajuste o espaçamento do separador */
+    margin-left: 12px; /* Espaço após o texto e antes do separador */
     color: #ccc;
     font-weight: 300;
 }
@@ -54,10 +54,11 @@
 /* Avatar do perfil */
 .profile-dropdown-container {
     margin-left: 15px; /* Espaço entre "Publicar" e o avatar */
+    /* Este item não deve ter separador após ele, então removemos a regra */
 }
 
 .profile-avatar {
-    width: 40px; /* Tamanho da bola de perfil */
+    width: 40px;
     height: 40px;
     border-radius: 50%;
     overflow: hidden;
@@ -81,11 +82,11 @@
     top: 100%;
     right: 0;
     background-color: #fff;
-    border: 1px solid #eee; /* Borda mais suave */
+    border: 1px solid #eee;
     border-radius: 5px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Sombra mais pronunciada */
-    min-width: 160px; /* Largura ajustada para caber "Desconectar" */
-    padding: 8px 0; /* Padding ajustado */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 160px;
+    padding: 8px 0;
     margin-top: 10px;
     z-index: 1001;
 }
@@ -105,5 +106,22 @@
 }
 
 .dropdown-item:hover {
-    background-color: #f5f5f5; /* Fundo mais claro no hover */
+    background-color: #f5f5f5;
+}
+
+/* Estilos para o botão "Registrar" */
+.register-button {
+    background-color: #333; /* Fundo preto */
+    color: white;
+    padding: 8px 18px; /* Padding ajustado */
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Remover sublinhado do link */
+    display: inline-block; /* Para que o padding funcione corretamente */
+}
+
+.register-button:hover {
+    background-color: #000;
+    color: white;
 }
