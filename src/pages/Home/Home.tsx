@@ -1,7 +1,6 @@
 // src/pages/Home/Home.tsx
 import React, { useEffect, useState } from 'react';
 import styles from './Home.module.css';
-import Navbar from '../../components/Navbar/Navbar';
 import FeaturedArticle from '../../components/FeaturedArticle/FeaturedArticle';
 import ArticleCard from '../../components/ArticleCard/ArticleCard';
 import NewArticlesSection from '../../components/NewArticlesSection/NewArticlesSection';
@@ -32,7 +31,6 @@ const Home: React.FC = () => {
 
   return (
     <div className={styles.homeContainer}>
-      <Navbar />
       <div className={styles.mainContent}>
         <div className={styles.leftColumn}>
           {featuredArticle && <FeaturedArticle article={featuredArticle} />}

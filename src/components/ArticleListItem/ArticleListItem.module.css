@@ -1,0 +1,57 @@
+.articleListItem {
+  display: flex;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  overflow: hidden; /* Ensures border-radius is applied correctly */
+  height: 250px; /* Fixed height for consistency */
+}
+
+.articleImage {
+  width: 35%; /* Adjust width as per the image */
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+.imagePlaceholder {
+  width: 35%;
+  height: 100%;
+  background-color: #007bff; /* Example background color for placeholder */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  font-weight: bold;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.content {
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1; /* Allows content to take remaining space */
+}
+
+.title {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 0.8rem;
+  line-height: 1.3;
+}
+
+.description {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.meta {
+  font-size: 0.9rem;
+  color: #777;
+  align-self: flex-start; /* Align meta to the start (bottom-left if space is tight) */
+}
