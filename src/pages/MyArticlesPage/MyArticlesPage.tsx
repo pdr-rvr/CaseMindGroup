@@ -55,13 +55,12 @@ const MyArticlesPage: React.FC = () => {
 
   return (
     <div className="my-articles-page-container">
-      <h1>Meus Artigos</h1>
       <div className="articles-grid">
         {articles.map((article, index) => (
           <ArticleCard 
             key={article.id} 
             article={article} 
-            index={index} 
+            index={index}
             isEditable={true} 
             onEditClick={handleEditArticle} 
           />

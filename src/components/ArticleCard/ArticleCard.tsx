@@ -35,8 +35,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, isEditable = false, 
           </div>
         </div>
       {isEditable && onEditClick && (
-        <button className="edit-button" onClick={() => onEditClick(article.id)}>
-          <img src="/icons/edit-icon.svg" alt="Editar" style={{ width: '20px', height: '20px' }} />
+        <button className="edit-button" onClick={() => onEditClick(article.id!)}>
+          Editar
         </button>
       )}
     </div>
