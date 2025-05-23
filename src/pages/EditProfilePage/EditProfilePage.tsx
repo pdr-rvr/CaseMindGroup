@@ -47,7 +47,7 @@ const EditProfilePage: React.FC = () => {
         const data = await response.json();
         setName(data.name || '');
         setLastName(data.lastName || '');
-        setProfileImageUrl(data.profilePictureUrl || '/images/default_profile.png'); //
+        setProfileImageUrl(data.profilePictureUrl || '/images/default_profile.png');
       } catch (err: any) {
         console.error('Erro ao buscar perfil:', err);
         setError(err.message || 'Ocorreu um erro ao carregar o perfil.');
@@ -107,6 +107,10 @@ const EditProfilePage: React.FC = () => {
       const result = await response.json();
       setSuccessMessage(result.message || 'Perfil atualizado com sucesso!');
 
+      setTimeout(() => {
+        navigate('/profile');
+      }, 1500);
+
     } catch (err: any) {
       console.error('Erro ao salvar perfil:', err);
       setError(err.message || 'Ocorreu um erro desconhecido ao salvar o perfil.');
@@ -129,69 +133,88 @@ const EditProfilePage: React.FC = () => {
 
   return (
     <div className="edit-profile-container">
-      <h1>Editar Perfil</h1> 
+      <div className="header-bar">
+        <h1 className="page-title">Editar Perfil</h1>
+        <div className="action-buttons">
+          <button type="button" className="cancel-button" onClick={handleCancel} disabled={pageLoading}>Cancelar</button>
+          <button type="submit" className="save-button" onClick={handleSave} disabled={pageLoading}>
+            {pageLoading ? 'Salvando...' : 'Salvar'}
+          </button>
+        </div>
+      </div>
+      
       {error && <div className="error-message">{error}</div>}
       {successMessage && <div className="success-message">{successMessage}</div>}
-      <form onSubmit={handleSave} className="profile-form"> 
-        <div className="left-column"> 
+
+      <form className="profile-form">
+        <div className="form-content">
+          <div className="left-column">
             <div className="form-section image-upload-section">
-                <label htmlFor="avatar-upload">Inserir avatar</label>
-                <div className="image-input-group">
-                    <input
-                        type="text"
-                        readOnly
-                        value={profileImageFile ? profileImageFile.name : (profileImageUrl && profileImageUrl !== '/images/default_profile.png' ? 'Imagem atual' : 'Adicione um avatar')}
-                        placeholder="Adicione um avatar"
-                    />
-                    <label htmlFor="avatar-upload" className="select-button">
-                        Selecionar
-                    </label>
-                    <input
-                        type="file"
-                        id="avatar-upload"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        style={{ display: 'none' }}
-                    />
+              <label htmlFor="avatar-upload" className="label">Inserir avatar</label>
+              <div className="image-input-group">
+                <input
+                  type="text"
+                  readOnly
+                  className="input-field"
+                  value={profileImageFile ? profileImageFile.name : (profileImageUrl && profileImageUrl !== '/images/default_profile.png' ? 'Imagem atual' : 'Adicione um avatar')}
+                  placeholder="Adicione um avatar"
+                  disabled={pageLoading}
+                />
+                <input
+                  type="file"
+                  id="avatar-upload"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  style={{ display: 'none' }}
+                />
+                <label htmlFor="avatar-upload" className="select-button">
+                  SELECIONAR
+                </label>
+              </div>
+            </div>
+
+            <div className="form-section">
+              <label htmlFor="name" className="label">Nome</label>
+              <input
+                type="text"
+                id="name"
+                className="input-field"
+                placeholder="John"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                disabled={pageLoading}
+              />
+            </div>
+
+            <div className="form-section">
+              <label htmlFor="lastName" className="label">Sobrenome</label>
+              <input
+                type="text"
+                id="lastName"
+                className="input-field"
+                placeholder="Doe"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                disabled={pageLoading}
+              />
+            </div>
+          </div>
+          
+          <div className="right-column">
+            <div className="profile-image-preview">
+              {profileImageUrl ? (
+                <img src={profileImageUrl} alt="Preview do Avatar" className="profile-preview-image" />
+              ) : (
+                <div className="profile-placeholder-icon-container">
+                  <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="7" r="4"></circle>
+                    <path d="M2 21v-2a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v2"></path>
+                  </svg>
                 </div>
+              )}
             </div>
-
-            <div className="form-section">
-                <label htmlFor="name">Nome</label>
-                <input
-                    type="text"
-                    id="name"
-                    placeholder="John"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    disabled={pageLoading}
-                />
-            </div>
-
-            <div className="form-section">
-                <label htmlFor="lastName">Sobrenome</label>
-                <input
-                    type="text"
-                    id="lastName"
-                    placeholder="Doe"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    disabled={pageLoading}
-                />
-            </div>
-
-            <div className="form-actions">
-                <button type="button" className="cancel-button" onClick={handleCancel} disabled={pageLoading}>Cancelar</button> 
-                <button type="submit" className="save-button" disabled={pageLoading}> 
-                    {pageLoading ? 'Salvando...' : 'Salvar'}
-                </button>
-            </div>
-        </div>
-        <div className="right-column"> 
-            <div className="profile-image-preview large-preview"> 
-                <img src={profileImageUrl} alt="Profile Preview" />
-            </div>
+          </div>
         </div>
       </form>
     </div>
