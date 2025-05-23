@@ -40,7 +40,6 @@ const ArticlesPage: React.FC = () => {
 
   return (
     <div className="articles-page-container">
-      <h1>Todos os Artigos</h1>
       <div className="articles-grid">
         {articles.map((article, index) => (
           <ArticleCard key={article.id} article={article} index={index} />

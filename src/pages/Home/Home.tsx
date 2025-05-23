@@ -22,7 +22,7 @@ const Home: React.FC = () => {
       setRecentArticles(fetchedRecentArticles);
 
       const fetchedNewArticles = await articleService.getNewArticles();
-      setNewArticles(fetchedNewArticles);
+      setNewArticles(fetchedNewArticles.slice(0, 4));
     };
 
     fetchArticles();

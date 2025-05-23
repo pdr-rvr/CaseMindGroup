@@ -2,11 +2,7 @@
   max-width: 1200px;
   margin: 20px auto;
   padding: 0 20px;
-}
-
-.articles-page-container h1 {
   text-align: center;
-  margin-bottom: 40px;
   color: #333;
 }
 
@@ -91,14 +87,14 @@
 
 .error-message {
   text-align: center;
-  color: red;
+  color: #333;
   margin-top: 50px;
   font-size: 1.2em;
 }
 
 .no-articles {
   text-align: center;
-  color: #666;
+  color: #333;
   margin-top: 50px;
   font-size: 1.2em;
 }

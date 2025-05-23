@@ -6,6 +6,7 @@ import './CreateArticlePage.css';
 const CreateArticlePage: React.FC = () => {
   const [title, setTitle] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageUrlPreview, setImageUrlPreview] = useState<string | null>(null);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,6 +18,10 @@ const CreateArticlePage: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImageFile(file);
+      setImageUrlPreview(URL.createObjectURL(file)); 
+    } else {
+      setImageFile(null);
+      setImageUrlPreview(null);
     }
   };
 
@@ -63,6 +68,7 @@ const CreateArticlePage: React.FC = () => {
       setTitle('');
       setContent('');
       setImageFile(null);
+      setImageUrlPreview(null);
       setTimeout(() => {
         navigate('/articles');
       }, 1500);
@@ -81,15 +87,26 @@ const CreateArticlePage: React.FC = () => {
 
   return (
     <div className="create-article-container">
-      <h1>Novo Artigo</h1>
+      <div className="header-bar"> 
+        <h1 className="page-title">Novo Artigo</h1>
+        <div className="action-buttons">
+          <button type="button" className="cancel-button" onClick={handleCancel} disabled={loading}>Cancelar</button>
+          <button type="submit" className="save-button" onClick={handleSave} disabled={loading}>
+            {loading ? 'Salvando...' : 'Salvar'}
+          </button>
+        </div>
+      </div>
+      
       {error && <div className="error-message">{error}</div>}
       {successMessage && <div className="success-message">{successMessage}</div>}
-      <form onSubmit={handleSave} className="article-form">
+
+      <form className="article-form">
         <div className="form-section">
           <label htmlFor="title">Título</label>
           <input
             type="text"
             id="title"
+            className="input-field"
             placeholder="Adicione um título"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -98,31 +115,35 @@ const CreateArticlePage: React.FC = () => {
           />
         </div>
 
-        <div className="form-section image-upload-section">
-          <label>Inserir imagem</label>
-          <div className="image-input-group">
-            <input
-              type="text"
-              readOnly
-              value={imageFile ? imageFile.name : 'Adicione uma imagem'}
-              placeholder="Adicione uma imagem"
-            />
-            <label htmlFor="image-upload" className="select-button">
-              Selecionar
-            </label>
-            <input
-              type="file"
-              id="image-upload"
-              accept="image/*"
-              onChange={handleImageChange}
-              style={{ display: 'none' }}
-            />
+        <div className="form-section image-section">
+          <div className="image-input-area">
+            <label htmlFor="image-upload" className="image-label">Inserir imagem</label>
+            <div className="image-input-group">
+              <input
+                type="text"
+                readOnly
+                className="input-field"
+                value={imageFile ? imageFile.name : ''}
+                placeholder="Adicione uma imagem"
+                disabled={loading}
+              />
+              <input
+                type="file"
+                id="image-upload"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+              <label htmlFor="image-upload" className="select-button">
+                SELECIONAR
+              </label>
+            </div>
           </div>
-          <div className="image-preview">
-            {imageFile ? (
-              <img src={URL.createObjectURL(imageFile)} alt="Preview" />
+          <div className="image-preview-area">
+            {imageUrlPreview ? (
+              <img src={imageUrlPreview} alt="Preview" className="preview-image" />
             ) : (
-              <div className="image-placeholder">
+              <div className="placeholder-icon-container">
                 <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                   <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -137,6 +158,7 @@ const CreateArticlePage: React.FC = () => {
           <label htmlFor="content">Texto</label>
           <textarea
             id="content"
+            className="input-field textarea-field"
             placeholder="Escreva seu artigo" 
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -144,13 +166,6 @@ const CreateArticlePage: React.FC = () => {
             required
             disabled={loading}
           ></textarea>
-        </div>
-
-        <div className="form-actions">
-          <button type="button" className="cancel-button" onClick={handleCancel} disabled={loading}>Cancelar</button>
-          <button type="submit" className="save-button" disabled={loading}>
-            {loading ? 'Salvando...' : 'Salvar'}
-          </button>
         </div>
       </form>
     </div>
