@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './Home.module.css';
+import './Home.css';
 import FeaturedArticle from '../../components/FeaturedArticle/FeaturedArticle';
 import ArticleCard from '../../components/ArticleCard/ArticleCard';
 import NewArticlesSection from '../../components/NewArticlesSection/NewArticlesSection';
@@ -29,18 +29,18 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div className={styles.homeContainer}>
-      <div className={styles.topContentWrapper}>
-        <div className={styles.leftColumn}>
+    <div className="home-container">
+      <div className="top-content-wrapper">
+        <div className="left-column">
           {featuredArticle && <FeaturedArticle article={featuredArticle} />}
         </div>
-        <div className={styles.rightColumn}>
+        <div className="right-column">
           <NewArticlesSection articles={newArticles} />
         </div>
       </div>
-      
-      <div className={styles.recentArticlesFooter}>
-        <div className={styles.recentArticlesGrid}>
+
+      <div className="recent-articles-footer">
+        <div className="recent-articles-grid">
           {recentArticles.map((article, index) => (
             <ArticleCard key={article.id} article={article} index={index} />
           ))}
