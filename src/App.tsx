@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet  } from 'react-router-dom';
-import HomePage from './pages/Home/Home'; // Sua HomePage
-import ArticlesPage from './pages/ArticlesPage/ArticlesPage'; // A nova ArticlesPage
-import Navbar from './components/Navbar/Navbar' // Seu componente de navegação
+import HomePage from './pages/Home/Home';
+import ArticlesPage from './pages/ArticlesPage/ArticlesPage';
+import Navbar from './components/Navbar/Navbar'
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
