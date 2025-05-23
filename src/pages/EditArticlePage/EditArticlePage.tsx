@@ -37,8 +37,16 @@ const EditArticlePage: React.FC = () => {
           }
           setOriginalArticle(fetchedArticle);
           setTitle(fetchedArticle.title);
-          if (fetchedArticle.featured_image && fetchedArticle.image_mime_type) {
-            setImageUrlPreview(`data:${fetchedArticle.image_mime_type};base64,${fetchedArticle.featured_image}`);
+          let base64ImageData: string | null = null;
+          if (fetchedArticle.featured_image) {
+            if (typeof fetchedArticle.featured_image === 'string') {
+              base64ImageData = fetchedArticle.featured_image;
+            } else if (typeof fetchedArticle.featured_image === 'object' && fetchedArticle.featured_image !== null && 'data' in fetchedArticle.featured_image) {
+              base64ImageData = (fetchedArticle.featured_image as any).data;
+            }
+          }
+          if (base64ImageData && fetchedArticle.image_mime_type) {
+            setImageUrlPreview(`data:${fetchedArticle.image_mime_type};base64,${base64ImageData}`);
           } else {
             setImageUrlPreview(null);
           }
@@ -64,8 +72,16 @@ const EditArticlePage: React.FC = () => {
       setImageUrlPreview(URL.createObjectURL(file));
     } else {
       setImageFile(null);
-      if (originalArticle?.featured_image && originalArticle?.image_mime_type) {
-        setImageUrlPreview(`data:${originalArticle.image_mime_type};base64,${originalArticle.featured_image}`);
+      let originalBase64ImageData: string | null = null;
+      if (originalArticle?.featured_image) {
+        if (typeof originalArticle.featured_image === 'string') {
+          originalBase64ImageData = originalArticle.featured_image;
+        } else if (typeof originalArticle.featured_image === 'object' && originalArticle.featured_image !== null && 'data' in originalArticle.featured_image) {
+          originalBase64ImageData = (originalArticle.featured_image as any).data;
+        }
+      }
+      if (originalBase64ImageData && originalArticle?.image_mime_type) {
+        setImageUrlPreview(`data:${originalArticle.image_mime_type};base64,${originalBase64ImageData}`);
       } else {
         setImageUrlPreview(null);
       }
@@ -96,14 +112,13 @@ const EditArticlePage: React.FC = () => {
     if (imageFile) {
       formData.append('featured_image', imageFile);
     } else {
-    
     }
 
     try {
       const updatedArticle = await articleService.updateArticle(Number(id), formData, token);
       if (updatedArticle) {
         alert('Artigo atualizado com sucesso!');
-        navigate(`/articles/${updatedArticle.id}`);
+        navigate('/my-articles');
       } else {
         setError('Falha ao atualizar o artigo.');
       }
@@ -116,6 +131,10 @@ const EditArticlePage: React.FC = () => {
     }
   };
 
+  const handleCancel = () => {
+    navigate(-1);
+  };
+
   if (loading) {
     return <div className="edit-article-container">Carregando artigo para edição...</div>;
   }
@@ -126,78 +145,95 @@ const EditArticlePage: React.FC = () => {
 
   return (
     <div className="edit-article-container">
-      <h1>Editar Artigo</h1>
-      {error && <div className="form-error-message">{error}</div>}
-      <form onSubmit={handleSubmit} className="edit-article-form">
-        <div className="form-group">
-          <label htmlFor="title">Título</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            placeholder="Adicione um título"
-          />
-        </div>
-
-        <div className="form-group image-upload-group">
-          <label htmlFor="image">Inserir imagem</label>
-          <input
-            type="file"
-            id="image"
-            accept="image/*"
-            onChange={handleImageChange}
-            style={{ display: 'none' }}
-          />
-          <div className="image-input-display">
-            <input
-              type="text"
-              value={imageFile ? imageFile.name : (imageUrlPreview ? "Imagem atual selecionada" : "")}
-              readOnly
-              placeholder="Adicione uma imagem"
-            />
-            <button
-              type="button"
-              onClick={() => document.getElementById('image')?.click()}
-              className="select-image-button"
-            >
-              SELECIONAR
-            </button>
-          </div>
-          {imageUrlPreview && (
-            <div className="image-preview-container">
-              <img src={imageUrlPreview} alt="Pré-visualização" className="image-preview" />
-            </div>
-          )}
-          {originalArticle?.featured_image && !imageFile && (
-             <button type="button" className="remove-image-button" onClick={() => {
-                setImageFile(null);
-                setImageUrlPreview(null);
-             }}>
-                Remover Imagem Atual
-             </button>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="content">Texto</label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-            placeholder="Escreva seu artigo"
-          ></textarea>
-        </div>
-
-        <div className="form-actions">
-          <button type="button" className="cancel-button" onClick={() => navigate(-1)}>
-            Cancelar
-          </button>
-          <button type="submit" className="save-button" disabled={submitting}>
+      <div className="header-bar">
+        <h1 className="page-title">Editar Artigo</h1>
+        <div className="action-buttons">
+          <button type="button" className="cancel-button" onClick={handleCancel} disabled={submitting}>Cancelar</button>
+          <button type="submit" className="save-button" onClick={handleSubmit} disabled={submitting}>
             {submitting ? 'Salvando...' : 'Salvar'}
           </button>
+        </div>
+      </div>
+      
+      {error && <div className="error-message">{error}</div>}
+
+      <form className="article-form">
+        <div className="form-content">
+          <div className="left-column">
+            <div className="form-section">
+              <label htmlFor="title" className="label">Título</label>
+              <input
+                type="text"
+                id="title"
+                className="input-field"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                placeholder="Adicione um título"
+                disabled={submitting}
+              />
+            </div>
+
+            <div className="form-section image-section">
+              <div className="image-input-area">
+                <label htmlFor="image-upload" className="label">Inserir imagem</label>
+                <div className="image-input-group">
+                  <input
+                    type="text"
+                    readOnly
+                    className="input-field"
+                    value={imageFile ? imageFile.name : (imageUrlPreview ? "Imagem atual selecionada" : "")}
+                    placeholder="Adicione uma imagem"
+                    disabled={submitting}
+                  />
+                  <input
+                    type="file"
+                    id="image-upload"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="image-upload" className="select-button">
+                    SELECIONAR
+                  </label>
+                </div>
+                {originalArticle?.featured_image && !imageFile && (
+                  <button type="button" className="remove-image-button" onClick={() => {
+                    setImageFile(null);
+                    setImageUrlPreview(null);
+                  }} disabled={submitting}>
+                    Remover Imagem Atual
+                  </button>
+                )}
+              </div>
+              <div className="image-preview-area">
+                {imageUrlPreview ? (
+                  <img src={imageUrlPreview} alt="Pré-visualização" className="preview-image" />
+                ) : (
+                  <div className="placeholder-icon-container">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="form-section">
+              <label htmlFor="content" className="label">Texto</label>
+              <textarea
+                id="content"
+                className="input-field textarea-field"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                required
+                placeholder="Escreva seu artigo"
+                disabled={submitting}
+              ></textarea>
+            </div>
+          </div>
         </div>
       </form>
     </div>

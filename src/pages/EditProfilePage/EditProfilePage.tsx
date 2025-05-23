@@ -108,7 +108,7 @@ const EditProfilePage: React.FC = () => {
       setSuccessMessage(result.message || 'Perfil atualizado com sucesso!');
 
       setTimeout(() => {
-        navigate('/profile');
+        navigate('/');
       }, 1500);
 
     } catch (err: any) {
