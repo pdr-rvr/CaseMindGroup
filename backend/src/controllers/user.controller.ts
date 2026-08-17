@@ -1,82 +1,150 @@
-import { AsyncRequestHandler } from '../types/express';
 import { Request, Response, NextFunction } from 'express';
-import UserModel from '../models/user.model';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
+import bcrypt from 'bcrypt';
+import UserModel from '../models/user.model';
+import { AppError } from '../utils/AppError';
 
+// Multer em memória para avatar
 const storage = multer.memoryStorage();
+export const uploadProfileImage = multer({
+  storage,
+  limits: {
+    fileSize: 3 * 1024 * 1024, // Limite de 3MB
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new AppError('Apenas arquivos de imagem são permitidos para o avatar.', 400));
+    }
+  },
+});
 
-export const uploadProfileImage = multer({ storage });
-
-export const getUserProfile: AsyncRequestHandler = async (req, res, next) => {
+/**
+ * Retorna o perfil do usuário autenticado.
+ */
+export const getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
-
     if (!userId) {
-      res.status(401).json({ message: 'Não autorizado: ID do usuário ausente.' });
-      return;
+      throw new AppError('Acesso não autorizado.', 401);
     }
 
     const user = await UserModel.findByIdWithProfileImage(userId);
-
     if (!user) {
-      res.status(404).json({ message: 'Usuário não encontrado.' });
-      return;
+      throw new AppError('Usuário não encontrado.', 404);
     }
 
-    let profilePictureUrl: string | null = null;
-    if (user.profilePictureBase64 && user.profile_picture_mime_type) {
-      profilePictureUrl = `data:${user.profile_picture_mime_type};base64,${user.profilePictureBase64}`;
-    }
-
-    res.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      profilePictureUrl: profilePictureUrl,
-    });
+    res.json(user);
   } catch (error) {
-    console.error('Erro ao obter perfil do usuário:', error);
     next(error);
   }
 };
 
-export const updateProfile: AsyncRequestHandler = async (req, res, next) => {
+/**
+ * Retorna o avatar do usuário como stream binário.
+ */
+export const getUserAvatar = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = Number(req.params.id);
+    if (isNaN(userId)) {
+      throw new AppError('ID de usuário inválido.', 400);
+    }
+
+    const avatarData = await UserModel.findRawAvatarById(userId);
+    if (!avatarData || !avatarData.profile_picture_data) {
+      throw new AppError('Avatar não encontrado.', 404);
+    }
+
+    res.set({
+      'Content-Type': avatarData.profile_picture_mime_type,
+      'Cache-Control': 'public, max-age=86400',
+    });
+    res.send(avatarData.profile_picture_data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Atualiza os dados do perfil do usuário (nome, avatar).
+ */
+export const updateProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
     if (!userId) {
-      res.status(401).json({ message: 'Não autorizado.' });
-      return;
+      throw new AppError('Acesso não autorizado.', 401);
     }
 
-    const { name } = req.body;
-
-    const updateData: { name?: string;} = {};
-    if (name) updateData.name = name;
- 
+    const { name, lastName } = req.body;
     let hasUpdates = false;
 
+    // Se veio nome completo ou nome + sobrenome
+    let fullName = name;
+    if (lastName && typeof lastName === 'string' && lastName.trim()) {
+      fullName = name ? `${name.trim()} ${lastName.trim()}` : lastName.trim();
+    }
+
+    if (fullName && typeof fullName === 'string' && fullName.trim()) {
+      await UserModel.updateProfile(userId, { name: fullName.trim() });
+      hasUpdates = true;
+    }
+
     if (req.file) {
-      const profileImageData = req.file.buffer;
-      const profileImageMimeType = req.file.mimetype;
-
-      const imageUpdated = await UserModel.updateProfilePicture(userId, profileImageData, profileImageMimeType);
-      if (imageUpdated) hasUpdates = true;
+      await UserModel.updateProfilePicture(userId, req.file.buffer, req.file.mimetype);
+      hasUpdates = true;
     }
 
-    if (Object.keys(updateData).length > 0) {
-      const profileUpdated = await UserModel.updateProfile(userId, updateData);
-      if (profileUpdated) hasUpdates = true;
+    if (!hasUpdates) {
+      throw new AppError('Nenhum dado válido para atualização foi fornecido.', 400);
     }
 
-    if (hasUpdates) {
-      res.json({ message: 'Perfil atualizado com sucesso!' });
-    } else {
-      res.status(400).json({ message: 'Nenhuma alteração detectada ou erro na atualização.' });
-    }
+    const updatedUser = await UserModel.findByIdWithProfileImage(userId);
+
+    res.json({
+      message: 'Perfil atualizado com sucesso!',
+      user: updatedUser,
+    });
   } catch (error) {
-    console.error('Erro ao atualizar perfil:', error);
+    next(error);
+  }
+};
+
+/**
+ * Altera a senha do usuário autenticado validando a senha atual.
+ */
+export const updatePassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user?.id;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!userId) {
+      throw new AppError('Acesso não autorizado.', 401);
+    }
+
+    if (!currentPassword || !newPassword) {
+      throw new AppError('Senha atual e nova senha são obrigatórias.', 400);
+    }
+
+    if (typeof newPassword !== 'string' || newPassword.length < 6) {
+      throw new AppError('A nova senha deve ter no mínimo 6 caracteres.', 400);
+    }
+
+    const userWithPassword = await UserModel.findByEmail(req.user?.email || '');
+    if (!userWithPassword) {
+      throw new AppError('Usuário não encontrado.', 404);
+    }
+
+    const passwordMatch = await bcrypt.compare(currentPassword, userWithPassword.password);
+    if (!passwordMatch) {
+      throw new AppError('A senha atual informada está incorreta.', 400);
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    await UserModel.updatePassword(userId, hashedNewPassword);
+
+    res.json({ message: 'Senha atualizada com sucesso!' });
+  } catch (error) {
     next(error);
   }
 };

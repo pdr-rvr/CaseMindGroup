@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { AppError } from '../utils/AppError';
 
 dotenv.config();
 
@@ -9,21 +10,28 @@ export const authenticate = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
+  const authHeader = req.header('Authorization');
+  const token = authHeader?.startsWith('Bearer ')
+    ? authHeader.slice(7)
+    : authHeader;
 
   if (!token) {
-    res.status(401).json({ message: 'Nenhum token fornecido' });
-    return;
+    return next(new AppError('Acesso não autorizado. Nenhum token fornecido.', 401));
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      return next(new AppError('Configuração interna do JWT ausente.', 500));
+    }
+
+    const decoded = jwt.verify(token, secret) as {
       id: number;
       email: string;
     };
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Token inválido' });
+    return next(new AppError('Token de autenticação inválido ou expirado.', 401));
   }
 };

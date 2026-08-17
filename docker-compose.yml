@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: blog_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blog_system
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/bd_dump.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  mysql_data:
