@@ -1,0 +1,27 @@
+.my-articles-page-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.my-articles-page-container h1 {
+    font-size: 2.2em;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.my-articles-page-container .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.my-articles-page-container .error-message,
+.my-articles-page-container .no-articles {
+    text-align: center;
+    color: #d9534f;
+    font-size: 1.2em;
+    margin-top: 50px;
+}

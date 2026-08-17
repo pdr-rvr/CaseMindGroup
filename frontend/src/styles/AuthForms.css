@@ -1,0 +1,87 @@
+.auth-form-card {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.auth-form-card h2 {
+  margin-bottom: 30px;
+  color: #000000;
+  font-size: 1.8em;
+}
+
+.auth-form .form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #000000;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.auth-form input[type="email"],
+.auth-form input[type="password"],
+.auth-form input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+.forgot-password-link {
+  display: block;
+  text-align: right;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  color: #000000;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+  color: #000000;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.auth-button:hover {
+  background-color: #555;
+}
+
+.auth-bottom-link {
+  margin-top: 25px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.auth-bottom-link a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-bottom-link a:hover {
+  text-decoration: underline;
+}
