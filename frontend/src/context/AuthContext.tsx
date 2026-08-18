@@ -1,11 +1,6 @@
-import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
-
-interface UserInfo {
-  id: number;
-  name: string;
-  email: string;
-  profilePictureUrl?: string;
-}
+import React, { createContext, useState, useEffect, useContext, ReactNode, useCallback } from 'react';
+import { UserInfo } from '../types/user';
+import { userService } from '../services/userService';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -13,6 +8,7 @@ interface AuthContextType {
   login: (token: string, user: UserInfo) => void;
   logout: () => void;
   getToken: () => string | null;
+  refreshUser: () => Promise<void>;
   loading: boolean;
 }
 
@@ -24,40 +20,47 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<UserInfo | null>(null);
+  const [user, setUser] = useState<UserInfo | null>(() => {
+    const saved = localStorage.getItem('user');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
   const [loading, setLoading] = useState<boolean>(true);
 
+  const refreshUser = useCallback(async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setIsAuthenticated(false);
+      setUser(null);
+      return;
+    }
+
+    try {
+      const profile = await userService.getProfile();
+      setIsAuthenticated(true);
+      setUser(profile);
+      localStorage.setItem('user', JSON.stringify(profile));
+    } catch (error) {
+      console.warn('Sessão expirada ou token inválido');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+      setIsAuthenticated(false);
+      setUser(null);
+    }
+  }, []);
+
   useEffect(() => {
-    const checkAuthStatus = async () => {
+    const checkAuth = async () => {
       const token = localStorage.getItem('authToken');
       if (token) {
-        try {
-          const response = await fetch('http://localhost:3000/api/users/profile', {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          });
-
-          if (response.ok) {
-            const userData = await response.json();
-            setIsAuthenticated(true);
-            setUser({
-              id: userData.id,
-              name: userData.name,
-              email: userData.email,
-              profilePictureUrl: userData.profilePictureUrl,
-            });
-          } else {
-            localStorage.removeItem('authToken');
-            setIsAuthenticated(false);
-            setUser(null);
-          }
-        } catch (error) {
-          console.error('Erro ao verificar status de autenticação:', error);
-          localStorage.removeItem('authToken');
-          setIsAuthenticated(false);
-          setUser(null);
-        }
+        setIsAuthenticated(true);
+        await refreshUser();
       } else {
         setIsAuthenticated(false);
         setUser(null);
@@ -65,27 +68,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     };
 
-    checkAuthStatus();
-  }, []);
+    checkAuth();
+  }, [refreshUser]);
 
   const login = (token: string, userInfo: UserInfo) => {
     localStorage.setItem('authToken', token);
+    localStorage.setItem('user', JSON.stringify(userInfo));
     setIsAuthenticated(true);
     setUser(userInfo);
   };
 
   const logout = () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
     setIsAuthenticated(false);
     setUser(null);
   };
 
-  const getToken = () => {
-    return localStorage.getItem('authToken');
-  };
+  const getToken = () => localStorage.getItem('authToken');
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, getToken, loading }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        user,
+        login,
+        logout,
+        getToken,
+        refreshUser,
+        loading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -94,7 +107,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useAuth deve ser utilizado dentro de um AuthProvider');
   }
   return context;
 };

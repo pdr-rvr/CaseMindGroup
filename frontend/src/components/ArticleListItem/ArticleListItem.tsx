@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Article } from '../../types/article';
+import { ArticleCoverImage } from '../ArticleCoverImage/ArticleCoverImage';
 import './ArticleListItem.css';
 
 interface ArticleListItemProps {
@@ -8,35 +9,42 @@ interface ArticleListItemProps {
 }
 
 const ArticleListItem: React.FC<ArticleListItemProps> = ({ article }) => {
+  const navigate = useNavigate();
+
   const formatDate = (dateString: string) => {
-    if (!dateString) return 'Data Indisponível';
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('pt-BR', options);
-  };
-
-  const imageUrl = article.featured_image && article.image_mime_type 
-    ? `data:${article.image_mime_type};base64,${article.featured_image}`
-    : '/images/default_article_image.png';
-
-  const truncateContent = (content: string, limit: number) => {
-    if (content.length <= limit) {
-      return content;
-    }
-    return content.substring(0, limit) + '...';
+    if (!dateString) return 'Data indisponível';
+    return new Date(dateString).toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'short',
+    });
   };
 
   return (
-      <div className="article-list-item">
-        <img src={imageUrl} alt={article.title} className="article-list-item-image" />
-        <div className="article-list-item-content">
-          <h3>{article.title}</h3>
-          <p>{truncateContent(article.content, 100)}</p>
-          <div className="article-list-item-meta">
-            <span className="author">Por {article.author_name}</span>
-            <span className="date">{formatDate(article.created_at)}</span>
-          </div>
+    <div
+      className="article-list-item"
+      onClick={() => navigate(`/articles/${article.id}`)}
+      role="article"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && navigate(`/articles/${article.id}`)}
+    >
+      <div className="article-list-item-img-wrapper">
+        <ArticleCoverImage
+          imageUrl={article.image_url}
+          base64Image={article.featured_image}
+          mimeType={article.image_mime_type}
+          alt={article.title}
+          className="article-list-item-image"
+        />
+      </div>
+      <div className="article-list-item-content">
+        <h4 className="article-list-item-title">{article.title}</h4>
+        <div className="article-list-item-meta">
+          <span className="author">Por {article.author_name}</span>
+          <span className="sep">•</span>
+          <span className="date">{formatDate(article.created_at)}</span>
         </div>
       </div>
+    </div>
   );
 };
 

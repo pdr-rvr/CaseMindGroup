@@ -1,35 +1,62 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Article } from '../../types/article';
+import { ArticleCoverImage } from '../ArticleCoverImage/ArticleCoverImage';
+import { ClockIcon } from '../Icons/Icons';
 import './FeaturedArticle.css';
-import { Link } from 'react-router-dom';
 
 interface FeaturedArticleProps {
   article: Article;
 }
 
 const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
+  const navigate = useNavigate();
+
   const formatDate = (dateString: string) => {
-    if (!dateString) return 'Data Indisponível';
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('pt-BR', options);
+    if (!dateString) return 'Data indisponível';
+    return new Date(dateString).toLocaleDateString('pt-BR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
   };
 
-  const imageUrl = article.featured_image && article.image_mime_type
-    ? `data:${article.image_mime_type};base64,${article.featured_image}`
-    : '/images/default_article_image.png';
-
   return (
-    <div className="featured-article">
-      <img
-        src={imageUrl}
-        alt={article.title}
-        className="featured-image"
-      />
-      <div className="content">
-        <h2 className="title">{article.title}</h2>
-        <p className="meta">
-          Por {article.author_name} - {formatDate(article.created_at)}
+    <div
+      className="featured-article"
+      onClick={() => navigate(`/articles/${article.id}`)}
+      role="article"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && navigate(`/articles/${article.id}`)}
+    >
+      <div className="featured-image-wrapper">
+        <ArticleCoverImage
+          imageUrl={article.image_url}
+          base64Image={article.featured_image}
+          mimeType={article.image_mime_type}
+          alt={article.title}
+          className="featured-image"
+        />
+        <div className="featured-badge">Destaque</div>
+      </div>
+      <div className="featured-content">
+        <h2 className="featured-title">{article.title}</h2>
+        <p className="featured-excerpt">
+          {article.content ? article.content.substring(0, 160) + '...' : ''}
         </p>
+        <div className="featured-meta">
+          <span className="featured-author">Por <strong>{article.author_name}</strong></span>
+          <span className="featured-meta-sep">•</span>
+          <span className="featured-date">{formatDate(article.created_at)}</span>
+          {article.read_time_minutes && (
+            <>
+              <span className="featured-meta-sep">•</span>
+              <span className="featured-readtime">
+                <ClockIcon size={14} /> {article.read_time_minutes} min
+              </span>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

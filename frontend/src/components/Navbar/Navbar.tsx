@@ -1,22 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useToast } from '../../context/ToastContext';
+import { ArticleIcon, SettingsIcon, LogoutIcon } from '../Icons/Icons';
 import './Navbar.css';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const toast = useToast();
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownMenuRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
     logout();
     setDropdownOpen(false);
+    toast.info('Você foi desconectado.');
     navigate('/login');
   };
 
   const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+    setDropdownOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -32,54 +38,105 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
-  const profilePicture = user?.profilePictureUrl || '/images/default_profile.png';
+  const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="navbar">
+    <header className="navbar-wrapper">
       <div className="navbar-container-inner">
-        <div className="navbar-brand">
-          <Link to="/">M.</Link>
+        <div className="navbar-left">
+          <Link to="/" className="navbar-brand">
+            <span className="brand-logo-letter">M</span>
+            <span className="brand-text">MindBlog</span>
+          </Link>
         </div>
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <Link to="/" className="nav-link">Home</Link>
-          </li>
-          <li className="nav-item separator">
-            <Link to="/articles" className="nav-link">Artigos</Link>
-          </li>
+
+        <nav className="navbar-center">
+          <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
+            Home
+          </Link>
+          <Link to="/articles" className={`nav-link ${isActive('/articles') ? 'active' : ''}`}>
+            Artigos
+          </Link>
+        </nav>
+
+        <div className="navbar-right">
           {isAuthenticated ? (
             <>
-              <li className="nav-item">
-                <Link to="/create-article" className="nav-link">Publicar</Link>
-              </li>
-              <li className="nav-item profile-dropdown-container">
-                <div className="profile-avatar" onClick={toggleDropdown}>
-                  <img src={profilePicture} alt="Profile" />
+              <Link to="/create-article" className="publish-cta-btn">
+                <span>+</span> Publicar
+              </Link>
+
+              <div className="profile-dropdown-container" ref={dropdownMenuRef}>
+                <div
+                  className="profile-avatar-trigger"
+                  onClick={toggleDropdown}
+                  role="button"
+                  tabIndex={0}
+                  aria-haspopup="true"
+                  aria-expanded={dropdownOpen}
+                >
+                  {user?.profilePictureUrl ? (
+                    <img
+                      src={user.profilePictureUrl}
+                      alt={user.name}
+                      className="navbar-avatar-img"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <span className="navbar-avatar-fallback">
+                      {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </span>
+                  )}
                 </div>
+
                 {dropdownOpen && (
-                  <div className="dropdown-menu" ref={dropdownMenuRef}>
-                    <Link to={`/edit-profile/${user?.id}`} className="dropdown-item" onClick={() => setDropdownOpen(false)}>
-                      Perfil
+                  <div className="dropdown-menu">
+                    <div className="dropdown-user-header">
+                      <p className="dropdown-user-name">{user?.name}</p>
+                      <p className="dropdown-user-email">{user?.email}</p>
+                    </div>
+                    <hr className="dropdown-divider" />
+                    <Link
+                      to="/my-articles"
+                      className="dropdown-item"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      <ArticleIcon size={16} /> Meus Artigos
                     </Link>
-                    <Link to={`/my-articles`} className="dropdown-item" onClick={() => setDropdownOpen(false)}>
-                      Meus Artigos
+                    <Link
+                      to="/edit-profile/me"
+                      className="dropdown-item"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      <SettingsIcon size={16} /> Configurações de Perfil
                     </Link>
-                    <button onClick={handleLogout} className="dropdown-item">
-                      Desconectar
+                    <hr className="dropdown-divider" />
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="dropdown-item dropdown-logout-btn"
+                    >
+                      <LogoutIcon size={16} /> Desconectar
                     </button>
                   </div>
                 )}
-              </li>
+              </div>
             </>
           ) : (
-            <li className="nav-item auth-buttons">
-              <Link to="/login" className="nav-link">Entrar</Link>
-              <Link to="/register" className="nav-link register-button">Registrar</Link>
-            </li>
+            <div className="auth-buttons-group">
+              <Link to="/login" className="login-link">
+                Entrar
+              </Link>
+              <Link to="/register" className="register-cta-btn">
+                Registrar
+              </Link>
+            </div>
           )}
-        </ul>
+        </div>
       </div>
-    </nav>
+    </header>
   );
 };
 

@@ -1,38 +1,51 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../../components/AuthLayout/AuthLayout';
+import { useToast } from '../../context/ToastContext';
+import { authService } from '../../services/authService';
 import '../../styles/AuthForms.css';
-import { registerUser } from '../../services/authService';
 
 const RegisterPage: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null);
-    setLoading(true);
 
-    console.log('Register attempt:', { name, email, password });
-
-    if (password !== confirmPassword) {
-      setErrorMessage('As senhas não coincidem!');
-      setLoading(false);
+    if (!name.trim() || name.trim().length < 2) {
+      toast.error('O nome deve ter pelo menos 2 caracteres.');
       return;
     }
 
+    if (!email.includes('@')) {
+      toast.error('Informe um e-mail válido.');
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error('A senha deve ter no mínimo 6 caracteres.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error('As senhas digitadas não coincidem.');
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      await registerUser(name, email, password);
-      alert('Cadastro realizado com sucesso! Você pode fazer login agora.');
+      await authService.register(name.trim(), email.trim(), password);
+      toast.success('Cadastro realizado com sucesso! Faça login para continuar.');
       navigate('/login');
     } catch (error: any) {
-      setErrorMessage(error.message || 'Ocorreu um erro desconhecido ao registrar.');
-      console.error('Register error:', error);
+      console.error('Erro no registro:', error);
+      toast.error(error.message || 'Ocorreu um erro ao criar a conta.');
     } finally {
       setLoading(false);
     }
@@ -41,63 +54,69 @@ const RegisterPage: React.FC = () => {
   return (
     <AuthLayout>
       <div className="auth-form-card">
-        <h2>Registrar</h2>
+        <h2>Criar Conta</h2>
+        <p className="auth-subtitle">Junte-se à nossa comunidade de leitores e autores</p>
+
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="name">Nome</label>
+            <label htmlFor="name">Nome Completo</label>
             <input
               type="text"
               id="name"
-              placeholder="Seu nome"
+              placeholder="Ex: Pedro Rovira"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
               disabled={loading}
             />
           </div>
+
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">E-mail</label>
             <input
               type="email"
               id="email"
-              placeholder="email@email.com"
+              placeholder="seuemail@exemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               disabled={loading}
             />
           </div>
+
           <div className="form-group">
             <label htmlFor="password">Senha</label>
             <input
               type="password"
               id="password"
-              placeholder="****"
+              placeholder="Mínimo 6 caracteres"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={loading}
             />
           </div>
+
           <div className="form-group">
-            <label htmlFor="confirmPassword">Confirmar senha</label>
+            <label htmlFor="confirmPassword">Confirmar Senha</label>
             <input
-              type="text"
+              type="password"
               id="confirmPassword"
-              placeholder="****"
+              placeholder="Repita sua senha"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               disabled={loading}
             />
           </div>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+
           <button type="submit" className="auth-button" disabled={loading}>
-            {loading ? 'Criando conta...' : 'Criar conta'}
+            {loading ? 'Cadastrando...' : 'Criar Conta'}
           </button>
         </form>
+
         <div className="auth-bottom-link">
-          Já tem cadastro? <Link to="/login">Clique aqui</Link>
+          Já possui cadastro? <Link to="/login">Entrar</Link>
         </div>
       </div>
     </AuthLayout>

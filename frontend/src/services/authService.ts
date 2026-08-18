@@ -1,53 +1,48 @@
 import api from './api';
 import axios from 'axios';
+import { AuthResponse } from '../types/user';
 
-interface AuthResponse {
-  token: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-  };
-}
-
-interface MessageResponse {
-  message: string;
-}
-
-export const registerUser = async (name: string, email: string, password: string): Promise<AuthResponse> => {
-  try {
-    const response = await api.post<AuthResponse>('/auth/register', { name, email, password });
-    return response.data;
-  } catch (error: any) {
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || 'Erro ao registrar.');
+export const authService = {
+  register: async (name: string, email: string, password: string): Promise<AuthResponse> => {
+    try {
+      const response = await api.post<AuthResponse>('/auth/register', { name, email, password });
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        throw new Error(error.response.data.message);
+      }
+      throw new Error('Erro ao cadastrar usuário. Tente novamente.');
     }
-    throw new Error('Erro de rede ou servidor ao registrar.');
-  }
+  },
+
+  login: async (email: string, password: string): Promise<AuthResponse> => {
+    try {
+      const response = await api.post<AuthResponse>('/auth/login', { email, password });
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        throw new Error(error.response.data.message);
+      }
+      throw new Error('Credenciais inválidas ou erro de conexão.');
+    }
+  },
+
+  changePasswordWithEmail: async (email: string, newPassword: string): Promise<{ message: string }> => {
+    try {
+      const response = await api.post<{ message: string }>('/auth/change-password-by-email', {
+        email,
+        newPassword,
+      });
+      return response.data;
+    } catch (error: any) {
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        throw new Error(error.response.data.message);
+      }
+      throw new Error('Erro ao alterar senha. Tente novamente.');
+    }
+  },
 };
 
-export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
-  try {
-    const response = await api.post<AuthResponse>('/auth/login', { email, password });
-    localStorage.setItem('authToken', response.data.token);
-    localStorage.setItem('user', JSON.stringify(response.data.user));
-    return response.data;
-  } catch (error: any) {
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || 'Erro ao fazer login.');
-    }
-    throw new Error('Erro de rede ou servidor ao fazer login.');
-  }
-};
-
-export const changePasswordWithEmail = async (email: string, newPassword: string): Promise<MessageResponse> => {
-  try {
-    const response = await api.post<MessageResponse>('/auth/change-password-by-email', { email, newPassword });
-    return response.data;
-  } catch (error: any) {
-    if (axios.isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || 'Erro ao alterar a senha.');
-    }
-    throw new Error('Erro de rede ou servidor ao alterar a senha.');
-  }
-};
+export const registerUser = authService.register;
+export const loginUser = authService.login;
+export const changePasswordWithEmail = authService.changePasswordWithEmail;

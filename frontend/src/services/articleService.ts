@@ -2,6 +2,21 @@ import api from './api';
 import { Article } from '../types/article';
 
 export const articleService = {
+  getAllArticles: async (search?: string, page?: number, limit?: number): Promise<Article[]> => {
+    try {
+      const params: Record<string, any> = {};
+      if (search && search.trim()) params.search = search.trim();
+      if (page) params.page = page;
+      if (limit) params.limit = limit;
+
+      const response = await api.get<Article[]>('/articles', { params });
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao buscar todos os artigos:', error);
+      return [];
+    }
+  },
+
   getFeaturedArticle: async (): Promise<Article | null> => {
     try {
       const response = await api.get<Article>('/articles/featured');
@@ -32,16 +47,6 @@ export const articleService = {
     }
   },
 
-  getAllArticles: async (): Promise<Article[]> => {
-    try {
-      const response = await api.get<Article[]>('/articles');
-      return response.data;
-    } catch (error) {
-      console.error('Erro ao buscar todos os artigos:', error);
-      return [];
-    }
-  },
-
   getArticleById: async (id: number): Promise<Article | null> => {
     try {
       const response = await api.get<Article>(`/articles/${id}`);
@@ -52,57 +57,41 @@ export const articleService = {
     }
   },
 
-  createArticle: async (articleData: FormData, token: string): Promise<Article | null> => {
+  getMyArticles: async (): Promise<Article[]> => {
     try {
-      const response = await api.post<Article>('/articles', articleData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await api.get<Article[]>('/articles/my');
       return response.data;
     } catch (error) {
-      console.error('Erro ao criar artigo:', error);
-      return null;
+      console.error('Erro ao buscar meus artigos:', error);
+      return [];
     }
   },
 
-  updateArticle: async (id: number, articleData: FormData, token: string): Promise<Article | null> => {
-    try {
-      const response = await api.put<Article>(`/articles/${id}`, articleData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Erro ao atualizar artigo:', error);
-      return null;
-    }
+  createArticle: async (formData: FormData): Promise<{ message: string; article: Article }> => {
+    const response = await api.post<{ message: string; article: Article }>('/articles', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
   },
 
-  deleteArticle: async (id: number, token: string): Promise<boolean> => {
+  updateArticle: async (id: number, formData: FormData): Promise<{ message: string; article: Article }> => {
+    const response = await api.put<{ message: string; article: Article }>(`/articles/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  deleteArticle: async (id: number): Promise<boolean> => {
     try {
-      await api.delete(`/articles/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      await api.delete(`/articles/${id}`);
       return true;
     } catch (error) {
       console.error('Erro ao deletar artigo:', error);
       return false;
     }
   },
-};
-
-export const getNewestArticles = async (): Promise<Article[]> => {
-  try {
-    const response = await api.get<Article[]>('/articles/new');
-    return response.data;
-  } catch (error) {
-    console.error('Erro ao buscar os novos artigos:', error);
-    throw error;
-  }
 };
